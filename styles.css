@@ -1,0 +1,25 @@
+body {
+    padding: 20px;
+    margin: auto;
+    max-width: 800px;
+}
+
+.tool-table {
+    display: table;
+    width: 800px;
+}
+
+.tool-cell {
+    float: left;
+    width: 50%;
+}
+
+img {
+    width: 200px;
+    height: 200px;
+}
+
+p {
+    margin: 5px;
+    height: 40px;
+}
