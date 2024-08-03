@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Turbo Labyrinth</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🐌</text></svg>">
+    </head>
+    <body>
+        <h1 id="page-title">Turbo Labyrinth</h1>
+        <div id="problem-description" class="section">
+            <h3>The Problem</h3>
+            <p><a href="https://en.wikipedia.org/wiki/Turbo_(2013_film)">Turbo the snail</a> plays a game on a board with 2024 rows and 2023 columns. There are hidden monsters in 2022 of the cells. Initially, Turbo does not know where any of the monsters are, but he knows that there is exactly one monster in each row except the first row and the last row, and that each column contains at most one monster.</p>
+            <p>Turbo makes a series of attempts to go from the first row to the last row. On each attempt, he chooses to start on any cell in the first row, then repeatedly moves to an adjacent cell sharing a common side. (He is allowed to return to a previously visited cell.) If he reaches a cell with a monster, his attempt ends and he is transported back to the first row to start a new attempt. The monsters do not move, and Turbo remembers whether or not each cell he has visited contains a monster. If he reaches any cell in the last row, his attempt ends and the game is over.</p>
+            <p>Determine the minimum value of <em>n</em> for which Turbo has a strategy that guarantees reaching the last row on the <em>n</em><sup>th</sup> attempt or earlier, regardless of the locations of the monsters.</p>
+        </div>
+        <div id="game" class="section">
+            Number of Rows: <input id="rows-input" type="number" value="10" min="4"/>
+            <select name="Level Difficulty Selector" id="level-difficulty-selector">
+                <option value="easy" description="Random monster placement.">Easy mode</option>
+                <option value="hard" description="Diagonal monster placement.">Hard mode</option>
+                <option value="evil" description="Dynamic placement of monsters into players way.">Evil mode</option>
+                <option value="random" description="Random difficulty mode">Random mode</option>
+            </select>
+            <button onclick="setupBoard()">Play</button>
+            <div id="attempt-counter"></div>
+            <div id="board">
+
+            </div>
+        </div>
+        <div id="problem-breakdown" class='section'>
+            <h3>Partial Breakdown</h3>
+            <p>What is the smallest number of attempts Turbo is guaranteed to escape in (and what is the strategy for it)?</p>
+            <p>
+                First of all, cool problem. It would be a great component of an adventure novel or movie, putting the reader into the character's shoes to solve the maze.
+                If it was me I would have forgotten about Game Theory and got eaten by monsters. <em>The math problem phrasing makes solving much easier, by emplying the existance of a good solution.</em> The problem says it's a snail and a board, but lets be honest, this is a labyrinth in some crazy death game escape show.
+            </p>
+            <p>
+                2024, 2023, and 2022 are year numbers. Though sometimes year numbers have special properties, I doubt it's the case here, so simplifying to a 10x9 board should be alright (thought the solution could be proportional or maybe maybe even-odd dependent.) The overall model of the board feels familiar: grid, puzzle game, and especially chess with <a href="https://en.wikipedia.org/wiki/Rook_polynomial">rook</a> placement <a href="https://math.stackexchange.com/search?q=rooks+placement">problems</a>.
+            </p>
+            <p>
+                Best way to get a hang of the situation is to play a few rounds, but make sure your are imagining the board correctly.
+                There is exactly one monster in each row and each column, (except one column that is empty to ensure an escape path always exists.)
+            </p>
+            <p>
+                There are factorial (!2023) possible monster placements. But notably, the problem asks not for probabilities but guarantees. The average doesn't matter; your strategy must perform well in worst case scenarios. You can't assume the monster placement is random, the creator of the labyrinth could be messing with you.
+            </p>
+            <p>
+                For most strategies the worst case scenario is a diagonal line of monsters ("Hard mode"), forcing you to hit every single monster before finding the empty column. <em>Oh, then I will just go to the last "empty" column streight away.</em> Hold your horses, the gamemaster could have shifted the gap to anywhere on the diagonal, if it is a diagonal at all.
+            <p>
+                After you are done fighting the diagonal, make sure your strategy still works in "normal" cases and can beats all my levels consistently.
+            </p>
+            <p>
+                <em>Congratulations, <a href="https://en.wiktionary.org/wiki/third_time%27s_a_charm">you won!</a></em>
+            </p>
+            <p>
+                Hint 1: <span class='spoiler'>Finding a cell with a monster reveals much more information than you might think.</span>
+            </p>
+            <p>
+                Hint 2: <span class='spoiler'>There is a good way to find a hole in a diagonal thanks to a quirk in monster placement.</span>
+            </p>
+        </div>
+        <div id="about" class="section">
+            <h3>About the problem</h3>
+            <p>
+                It is an easy problem. I solved it quickly and thought it was just another CS problem (I had no context). 
+                Now the reveal: this is <a href="https://www.imo-official.org/problems.aspx">International Mathematical Olympiad (IMO) 2024 problem 5</a> here is a <a href="https://www.reddit.com/r/math/comments/1ecvg97/imo_2024_question_5_turbo_the_snail/">reddit thread on it<a>. 
+            </p>
+            <p>
+                Both People (and Machines) were struggling, only 3/6 of the Chinese (ranked second), 1/6 Koreans (ranked third), and 4/6 of the Indian team (fourth) solved it.
+                In addition, <a href="https://deepmind.google/discover/blog/ai-solves-imo-problems-at-silver-medal-level/">Google's DeepMind</a> failed to solve it as well, despite solving the hardest problems on the list.
+                It is funny how much IMO and "couldn't solve this problem" don't add up, I had it repeated to me three times to make sure I heard that right.
+            </p>
+            <p>
+                There is a simple strategy that can be described in a pharagraph, but nobody expectes it to be that easy so the first answers are proportional logarithms or complicated strategies. I won't spoiler and let you do the solving.
+            </p>
+            <p>
+                Bonus question: What is the best strategy if you have only one attempt? (It is a hard question)
+            </p>
+        </div>
+        <div id="under-the-hood" class="section">
+            <h3>Under the Hood</h3>
+            <p><em>This page is a single static <code>.html</code> file. You can view or download it's source code with <a href="https://developer.mozilla.org/en-US/docs/Learn/Common_questions/Tools_and_setup/What_are_browser_developer_tools">Ctrl+S or Ctrl+Shift+C (Inspect)</a>. My <a href="https://andrei-akopian.github.io/">Homepage</a> is hosted on <a href="https://pages.github.com/">github pages</a> (from this <a href="https://github.com/andrei-akopian/andrei-akopian.github.io/puzzles/turbo_labyrinth.html">Source Code</a>).</em></p>
+            <p>
+                The problem sounded like a minigame and so I made it into one. The game in itself is easy. The current levels are more simulators for testing your strategy against edgecases than brainteasers.
+                Because each strategy has it's own unique worst case scenario, I couldn't think of a way to program a universally difficult level.
+            </p>
+            <p>
+                Clarification on difficulty levels:
+                <dl>
+                    <dt>Easy Mode</dt><dd>- completely random monster placement</dd>
+                    <dt>Hard Mode</dt><dd>- one of the diagonals with the gap at a random position.</dd>
+                    <dt>Evil Mode</dt><dd>- reactively places a monster when you walk onto a square that is not guaranteed to be safe.</dd>
+                    <dt>Random Mode</dt><dd>- randomly pickes one of the above difficulties</dd>
+                </dl>
+            </p>
+            <p>
+                The game makes solving the problem much easier, probably because it is hard to imagine the board correctly and having a correct board in front of you makes parts of the strategy instantly obvious. 
+                People who played the game hacked my monster placement behavior on each level very quickly, they tried around randomly until something worked. Hard mode with the diagonal turned out to be harder than evil mode.
+            </p>
+            <p>
+                I don't recommed running the actuall 2024x2023 board (or higher than 100x99 for that matter) as it would need 4 million cells taking up megabytes of memory, with an average screen and laptop not being able to reender such amounts of HTML (so I added a confirmation pop-up when more than 100 rows are entered). 
+                But if you really really want to for whatever reason: You Have Been Warned!
+            </p>
+            <p>
+                Because I like suffering, I didn't use <code>&lt;canvas&gt;</code>, instead I decided to try CSS grids. <em>If there is anything more fun than solving cool math problems, it is fighting CSS.</em>
+            </p>
+        </div>
+        <style>
+            .spoiler {
+                color: grey;
+                background-color: gray;
+            }
+            .spoiler:hover {
+                background-color: transparent;
+            }
+            body {
+                margin: 0;
+                scroll-behavior: smooth;
+            }
+            .section {
+                margin: 1em;
+                padding: 1em;
+                border-radius: 1em;
+            }
+            h3 {
+                margin-top: .5em;
+            }
+            #page-title {
+                background: khaki;
+                width: fit-content;
+                padding: 0 1em 0 1em;
+                border-radius: 0 1em 1em 0;
+            }
+            #problem-description {
+                background: darkseagreen;
+            }
+            #game {
+                background: skyblue;
+            }
+            #board {
+                display: grid;
+                grid-template: repeat(10,1fr) / repeat(9,1fr);
+                width: fit-content;
+                margin: auto;
+            }
+            #rows-input {
+                width: 5em;
+            }
+            #attempt-counter {
+                color: maroon;
+            }
+            c { /*cell*/
+                box-sizing: border-box;
+                background-color: white;
+                width: 1.2em;
+                height: 1.2em;
+                border-width: 0.05em;
+                border-style: solid;
+                font-size: 1;
+                text-align: center;
+            }
+            c.oc { /*opened cell*/
+                background-color: silver;
+            }
+            c.wc { /*winning cell coloring for last row*/
+                background-color: green;
+            }
+            #problem-breakdown {
+                background-color: thistle;
+            }
+            #about {
+                background-color: darksalmon
+            }
+            #under-the-hood {
+                background-color: darkgray;
+                border-radius: 1em 1em 0 0;
+                margin-bottom: 0;
+            }
+        </style>
+        <script>
+            let rows = 0;
+            let columns = 0;
+            let monsters = 0;
+            const board = document.getElementById("board");
+
+            const snail_emoji = '🐌';
+            const monster_emoji = '👾';
+            let snail_x = 0;
+            let snail_y = 0;
+            let monster_locations = []; // cell numbers
+            let has_won = false;
+            let difficulty_level = 'easy';
+            let attempt_counter = 1;
+            const attempt_display = document.getElementById('attempt-counter');
+
+            function cordsToCellNumber(x=0,y=0) {
+                return y*columns+x;
+            }
+            function parse_dimensions() {
+                rows = document.getElementById("rows-input").value;
+                if (rows<4){
+                    alert("There must be at least 4 rows.");
+                    document.getElementById("rows-input").value = 4;
+                    return false;
+                }
+                columns = rows-1;
+                monsters = columns-1;
+                if (rows>100){
+                    if (""+rows%30 == prompt(`Warning!: You picked a really big board size, your computer will have trouble processing and displaying ${rows*columns} cells. \n\nIf you want to proceed with ${rows} row anyway (not advised) confirm by entering mod 30 below:`)) {
+                        return true;
+                    }
+                    return false;
+                }
+                return true;
+            }
+            function cellGenerator(opened=false) {
+                let cell = document.createElement('c');
+                if (opened){
+                    cell.className="oc";
+                }
+                return cell;
+            }
+            function setupBoard() {
+                // reset
+                board.innerHTML = '';
+                attempt_display.textContent = '';
+                monster_locations = [];
+                snail_x = 0;
+                snail_y = 0;
+                has_won = false;
+                difficulty_level = document.getElementById('level-difficulty-selector').value;
+                if (difficulty_level == 'random'){
+                    difficulty_level = ['easy','hard','evil'][Math.floor(Math.random()*3)];
+                }
+                attempt_counter = 1;
+                // setup
+                if (!(parse_dimensions())){ // display warning if board size is to big
+                    return;
+                }
+                board.style.gridTemplate = `repeat(${rows},1fr) / repeat(${columns},1fr)`;
+                board.style.fontSize = `${4/(rows/10)}rem`; // cells use font size for scaling
+                for (let r=0;r<rows;r++){
+                    for (let c=0; c<columns; c++)
+                    board.appendChild(cellGenerator(opened=(r==0||r==rows-1)));
+                }
+                board.firstChild.innerHTML = snail_emoji;
+                attempt_display.textContent = `Attempt ${attempt_counter}`;
+                placeMonsters();
+                // aligns board at the top
+                board.scrollIntoView(false,{behavior:"auto",block:"end"});
+            }
+            function placeMonsters() {
+                monster_locations = [];
+                if (difficulty_level=='easy'){
+                    randomMonsters();
+                } else if (difficulty_level=='hard'){
+                    placeHardMonsters();
+                } else if (difficulty_level=='evil'){
+                    // Built into checkMonster and monster encounter functions
+                    // (has to be dynamic)
+                }
+            }
+            function randomMonsters() {
+                monster_locations = [];
+                for (let i=0; i<monsters; i++) {
+                    monster_locations.push([i,Math.random()]);
+                }
+                monster_locations.sort((a,b)=>(a[1]-b[1]));
+                for (let i=0; i<monsters; i++) {
+                    monster_locations[i]=monster_locations[i][0]*columns+i+columns;
+                }
+            }
+            function placeHardMonsters() { // diagonals
+                monster_locations = [];
+                let flip = Math.random()<0.5;
+                let empty_column = Math.floor(Math.random()*columns); // shift start
+                for (let i=0; i<monsters; i++){
+                    if (flip) {
+                        monster_locations.push(columns*i+columns*2-1-i-(empty_column<=i ? 1 : 0));
+                    } else {
+                        monster_locations.push(columns*i+columns+i+(empty_column<=i ? 1 : 0));
+                    }
+                }
+            }
+            function moveSnail(requested_vector=[0,0]) {
+                let target_x = snail_x + requested_vector[0];
+                let target_y = snail_y + requested_vector[1];
+                if (target_x<0 || target_x>=columns) { //boundary x
+                    return;
+                } else if (target_y<0 || target_y>=rows) { //bounary y
+                    return;
+                } else {
+                    // turn square gray
+                    if (checkMonster(target_x, target_y)){
+                        monsterEncounter(target_x,target_y)
+                    } else {
+                        updateSnailPosition(target_x,target_y);
+                    }
+                }
+            }
+            function monsterEncounter(target_x, target_y) {
+                attempt_counter++;
+                attempt_display.textContent = `Attempt ${attempt_counter}`;
+                let target_cell = board.children[cordsToCellNumber(target_x, target_y)];
+                target_cell.innerHTML=monster_emoji;
+                target_cell.className = 'oc';
+                updateSnailPosition(0,0); // has to be last for win handeling
+            }
+            function updateSnailPosition(target_x, target_y) {
+                board.children[cordsToCellNumber(snail_x,snail_y)].innerHTML = '';
+                snail_x = target_x;
+                snail_y = target_y;
+                board.children[cordsToCellNumber(target_x, target_y)].innerHTML = snail_emoji;
+                if (target_y==rows-1){
+                    winDisplay();
+                } else {
+                    board.children[cordsToCellNumber(target_x, target_y)].className='oc';
+                }
+            }
+            function checkMonster(target_x,target_y) {
+                let target = cordsToCellNumber(target_x, target_y);
+                if (monster_locations.includes(target)){
+                    return true;
+                } else if (board.children[target].classList.length>0) {
+                    return false;
+                } else if (difficulty_level=='evil'){
+                    return checkEvilMonster(target_x,target_y);
+                } else {
+                    return false;
+                }
+            }
+            function checkEvilMonster(target_x,target_y,auto_add=true) {
+                // relies on normal checkMonsters checks!
+                for (let ml of monster_locations) {
+                    if ((ml%columns==target_x) != ((ml/columns)>>0 == target_y)){
+                        return false;
+                    }
+                }
+                if (auto_add){
+                    monster_locations.push(cordsToCellNumber(target_x, target_y));
+                }
+                return true;
+            }
+            function winDisplay() {
+                if (has_won){
+                    return;
+                } else {
+                    has_won = true;
+                }
+                for (let c=0; c<columns; c++){
+                    board.children[rows*columns-1-c].className='wc';
+                }
+                attempt_display.textContent=`Escaped in ${attempt_counter} attempts!`
+            }
+            document.addEventListener("keydown", (event) => {
+                    switch (event.key) {
+                        case "ArrowUp":
+                            event.preventDefault(); // prevent arrow key page scrolling
+                        case "w":
+                            moveSnail([0,-1]);
+                            break;
+                        case "ArrowLeft":
+                        case "a":
+                            moveSnail([-1,0]);
+                            break;
+                        case "ArrowDown":
+                            event.preventDefault(); // prevent arrow key page scrolling
+                        case "s":
+                            moveSnail([0,1]);
+                            break;
+                        case "ArrowRight":
+                        case "d":
+                            moveSnail([1,0]);
+                            break;
+                        default:
+                            break;
+                    }
+            },false);
+        </script>
+    </body>
+</html>
