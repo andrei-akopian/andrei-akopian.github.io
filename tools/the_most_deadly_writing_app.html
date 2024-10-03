@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Most Dangerous Writing App</title>
+    </head>
+    <body>
+        <div id="timeline"><div id="timeline-bar"></div></div>
+        </div>
+        <!--Disabling spellcheck/dictionary: spellcheck="false" is Firefox specific, lang="zxx" is "No linguistic content"-->
+        <div id="typing-area" contenteditable="true" spellcheck="false" lang="zxx" autofocus></div>
+        <div id="death-message">
+            <h1>You Died</h1>
+            <button onclick="resetApp();">Start Again</button>
+            <!--TODO reloading window looses light/dark mode setting-->
+        </div>
+        <div id="footer-bar">
+            <div id="word-counter">0 words</div>
+            <div id="export-buttons">
+                Export:
+                <button onclick="print()">PDF</button>
+                <button onclick="saveToFile()">TXT</button>
+                <button onclick="navigator.clipboard.writeText(typing_area.textContent);">Copy</button>
+                <br/>
+            </div>
+            <div id="appearance-buttons">
+                <button onclick="document.body.classList.toggle('light-mode')">Light/Dark</button>
+                <button onclick="toggleFullscreen()">Fullscreen</button>
+                <button onclick="resetApp();">Start Again</button>
+                <br/>
+            </div>
+        </div>
+        <style>
+            body {
+                --text-color: gray;
+                --bg-color: rgb(25,30,35);
+                --tl-bg-color: rgb(35,40,45);
+                --tl-fill-color: midnightblue;
+                --button-bg-color: gray;
+                --accent-color: white;
+                background-color: var(--bg-color);
+                margin: 0;
+                height: 100vh;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+            .light-mode {
+                --text-color: gray;
+                --bg-color: white;
+                --tl-bg-color: lightgray;
+                --tl-fill-color: dodgerblue;
+                --button-bg-color: lightgray;
+                --accent-color: dimgray;
+            }
+            body::backdrop, body:fullscreen {
+                background: var(--bg-color);
+            }
+            button {
+                background-color: var(--button-bg-color);
+                border: 0;
+            }
+            #timeline {
+                height: 0.2em;
+                background: var(--tl-bg-color);
+                width: 100%;
+            }
+            #timeline-bar {
+                width: 0%;
+                height: 100%;
+                background: var(--tl-fill-color);
+            }
+            #typing-area {
+                margin: 3em auto 3em;
+                padding-top: 2em;
+                width: 40em;
+                outline: 0px solid transparent;
+                caret-color: red;
+                color: var(--text-color);
+                font-size: 1.1rem;
+                max-height: calc(100vh - 12em);
+                mask-image: linear-gradient(transparent, #000 2em);
+                overflow: scroll;
+                -ms-overflow-style: none;  /* Internet Explorer 10+ */
+                scrollbar-width: none;  /* Firefox */
+                filter: blur(--blur-amount);
+            }
+            [contenteditable=true]:empty:before {
+                /*https://stackoverflow.com/questions/20726174/placeholder-for-contenteditable-div*/
+                content: "Start typing...";
+                pointer-events: none;
+                display: block; /* For Firefox */
+            }
+            #death-message {
+                display: none;
+                margin: auto;
+                color: firebrick;
+                text-align: center;
+            }
+            #footer-bar {
+                margin: auto auto 2em;
+                width: fit-content;
+                color: var(--text-color);
+                text-align: center;
+            }
+            #appearance-buttons {
+                display: none;
+            }
+            #export-buttons {
+                display: none;
+            }
+            #footer-bar:hover > #export-buttons, #footer-bar:hover > #appearance-buttons {
+                display: inline;
+            }
+            @media print {
+                body {
+                    background-color: white;
+                    display: block;
+                    height: auto;
+                }
+                #timeline {
+                    display: none;
+                }
+                #footer-bar {
+                    display: none;
+                }
+                #death-message {
+                    display: none !important;
+                }
+                #typing-area {
+                    color: black;
+                    margin-top: 1em;
+                    padding-top: 0;
+                    display: block !important;
+                    mask-image: none;
+                    height: fit-content;
+                }
+            }
+        </style>
+        <script>
+        // Variable Constants
+        url_params = new URLSearchParams(window.location.search);
+        const writing_time_sec = parseInt(url_params.get('time') ?? 5*60); //default 5min
+        const death_time_sec = parseInt(url_params.get('death') ?? 5); //default 5sec
+        const death_animation_delay_fraction = 0.5;
+        // DOM Elements
+        const typing_area = document.getElementById('typing-area');
+        const word_counter = document.getElementById('word-counter');
+        const footer_bar = document.getElementById("footer-bar");
+        const export_buttons = document.getElementById("export-buttons");
+        const appearance_buttons = document.getElementById("appearance-buttons");
+        const death_message = document.getElementById('death-message');
+        // Animations
+        const death_shadow_animation = document.body.animate(
+          [
+            {boxShadow: "inset 0 0 0em red"},
+            {boxShadow: "inset 0 0 2em red"},
+          ],
+          {
+            delay: death_animation_delay_fraction*death_time_sec*1000,
+            duration: (1-death_animation_delay_fraction)*death_time_sec*1000,
+            easing: "linear",
+          }
+        );
+        death_shadow_animation.cancel();
+
+        const death_blur_animation = typing_area.animate(
+          [
+            {filter: "blur(0.0em)",color:"gray"},
+            {filter: "blur(0.1em)",color:"red"},
+          ],
+          {
+            delay: death_animation_delay_fraction*death_time_sec*1000,
+            duration: (1-death_animation_delay_fraction)*death_time_sec*1000,
+            easing: "linear",
+          }
+        );
+        death_blur_animation.cancel();
+
+        function cancelDeathAnimation() {death_blur_animation.cancel(); death_shadow_animation.cancel();}
+        function startDeathAnimation() {death_blur_animation.play(); death_shadow_animation.play();}
+        function restartDeathAnimation() {cancelDeathAnimation();startDeathAnimation();}
+
+        const timeline_animation = document.getElementById('timeline-bar').animate(
+          [
+            {width: "0%",},
+            {width: "100%",}
+          ],
+          {
+            duration: writing_time_sec*1000,
+            easing: "linear",
+          }
+        )
+        timeline_animation.cancel()
+
+        // Main code
+        let initiated = false; // timers etc. start only after first user input
+        let died = false;
+        let survived = false; // whether the time limit passed
+        let old_length = 0;
+        function resetApp(){
+          timeline_animation.cancel();
+          cancelDeathAnimation();
+          initiated= false;
+          died = false;
+          survived = false;
+          old_length = 0;
+          typing_area.innerHTML = "";
+          word_counter.textContent = "0 words";
+          footer_bar.style.color = "";
+          export_buttons.style.display = "";
+          appearance_buttons.style.display = "";
+          death_message.style.display = "";
+          typing_area.style.display = "";
+          typing_area.focus();
+        }
+        typing_area.addEventListener("input",function(){
+          if (!initiated){
+            timeline_animation.play()
+            initiated = true;
+          }
+          let new_length = typing_area.innerHTML.length;
+          if (!died && !survived && old_length<new_length) {
+            restartDeathAnimation();
+          }
+          word_counter.textContent = typing_area.innerText.trim().split(/\s+/).length + " words";
+          old_length = new_length;
+        }, false);
+        death_shadow_animation.addEventListener('finish',triggerDeath);
+        function triggerDeath(){
+          died = true;
+          cancelDeathAnimation()
+          timeline_animation.pause()
+          typing_area.style.display = 'none';
+          death_message.style.display = "block";
+        }
+        timeline_animation.addEventListener('finish',triggerEnd);
+        function triggerEnd() {
+          survived = true;
+          cancelDeathAnimation();
+          timeline_animation.cancel();
+          footer_bar.style.color = "var(--accent-color)";
+          export_buttons.style.display = "inline";
+          appearance_buttons.style.display = "inline";
+        }
+        function saveToFile(){
+          const file = new Blob([typing_area.textContent], { type: "text/plain" });
+          const url = window.URL.createObjectURL(file);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = "my_writing.txt";
+          a.click();
+        }
+        function toggleFullscreen() {
+          if (document.fullscreen) {
+            document.exitFullscreen();
+          } else if (document.fullscreenEnabled) {
+            document.body.requestFullscreen()
+          }
+        }
+        </script>
+    </body>
+</html>
