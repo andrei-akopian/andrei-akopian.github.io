@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Books</title>
+    </head>
+    <body>
+        <div id="title-sign">
+            <div id="chains">
+                <div class="chain"></div>
+                <div class="chain"></div>
+            </div>
+            <h1 id="page-title">A Stack of Good Books</h1>
+        </div>
+        <div id="book-stack">
+            <div id="books">
+!INSERT GOOD BOOKS HERE
+            </div>
+        </div>
+        <div id="more-books">
+!INSERT MORE BOOKS HERE
+        </div>
+        <style>
+            #title-sign {
+                position: absolute;
+            }
+            #chains {
+                position:absolute;
+                display: flex;
+                justify-content: space-around;
+                width: 100%;
+            }
+            .chain {
+                outline: black dashed thick;
+                border-radius: 0.5em;
+                background-color: black;
+                width: 0.1em;
+                height: 3em;
+            }
+            #page-title {
+                margin: 1em 0em 0em 0.5em;
+                padding: 0.5em;
+                background-color: chocolate;
+                border: solid sienna;
+                border-width: 0.5rem 0rem 0.5rem;
+                transform: rotate(-8deg);
+            }
+            body {
+                margin: 0;
+                height: 100vh;
+            }
+            h4 {
+                margin: 1em auto 0;
+            }
+            #book-stack {
+                width: 100%;
+                height: 100%;
+                margin: 0em auto 0em;
+                display: flex;
+                align-items: flex-end;
+                overflow: hidden;
+                justify-content: space-around;
+            }
+            #books {
+                width: fit-content;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                align-items: center;
+            }
+            #more-books {
+                display: flex;
+                flex-direction: column;
+                margin: auto;
+                width: fit-content;
+                align-items: center;
+            }
+            .book {
+                padding: 1em 2em 0em;
+                height: 2em;
+                min-width: 10em;
+                background-color: chocolate;
+                text-align: center;
+                border: 0.1em black solid;
+            }
+            .spine a {
+                text-decoration: none;
+                color: black;
+                font-family: Times New Roman;
+            }
+            .book:hover {
+                height: calc(100vh - 28em);
+                background-color: darkorange;
+                padding: 0;
+            }
+            .book:hover .cover {
+                display: flex !important;
+            }
+            .book:hover .spine {
+                display: none;
+            }
+            .cover {
+                display: none;
+                flex-direction: row;
+                height: 100%;
+            }
+            .cover-text {
+                flex-direction: column;
+                height: 100%;
+                flex-grow: 2;
+                --cover-text-max-width: 18em;
+            }
+            .description {
+                width: var(--cover-text-max-width);
+                font-family: Bradley Hand, "Brush Script MT", cursive, serif;
+            }
+            .cover-fold {
+                background-color: chocolate;
+                width: 0.5em;
+                margin-left: 0.5em;
+                height: 100%;
+            }
+            .link-list {
+                width: var(--cover-text-max-width);
+            }
+        </style>
+    </body>
+</html>
