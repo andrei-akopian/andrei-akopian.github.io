@@ -155,7 +155,7 @@ function converterHTML(structure, indent_depth = 0, inherited_inline = false) {
 
 // Run
 const dev = "./books.html";
-const release = "../notes/a-stack-of-books.html";
+const release = "../../notes/a-stack-of-books.html";
 let output = dev;
 if (process.argv[2] == "release") {
     output = release;

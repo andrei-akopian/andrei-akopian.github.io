@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Manual Proofreading Tool</title>
+    </head>
+    <body>
+        <div id="guide">
+            <h1>Manual Proofreading Tool</h1>
+            <h2>Proofreading 101</h2>
+            <ul>
+                <li>Read it at least once.</li>
+                <li>Read it aloud.</li>
+                <li>Read it backwards.</li>
+                <li>Read it in a horrible font/size. (<- this tool)</li>
+                <li>Read it a month/week/day/break later.</li>
+                <li>Retype the whole text by hand.</li>
+                <li>Ask a friend, computers (and you) don't notice logic issues.</li>
+            </ul>
+            <details id="what-to-look-for">
+                <summary>What to look for</summary>
+                <ul>
+                    <li><a href="https://www.stylemanual.gov.au/writing-and-designing-content/clear-language-and-writing-style/sentences#use_active_voice">Passive voice</a></li>
+                    <li>Weasel Words</li>
+                    <li>Cliches</li>
+                    <li><a href="https://en.wikipedia.org/wiki/Doublespeak">DoubleSpeak</a></li>
+                    <li><a href="https://www.visualthesaurus.com/cm/teachersatwork/the-case-against-adverbs/">Adverbs</a></li>
+                    <li><a href="https://dynomight.net/2021/02/07/writing-as-a-craft/"><strong>Clarity</strong></a></li>
+                    <li>Spelling mistakes</li>
+                </ul>
+                <p>More on that from <a href="https://managebetter.com/blog/writing-at-amazon">Amazon</a>, <a href="https://www.stylemanual.gov.au/">Austrailian Government</a>, <a href="https://robertheaton.com/2018/12/06/a-blogging-style-guide/">a blogger</a>, <a href="https://cdn.static-economist.com/sites/default/files/store/Style_Guide_2015.pdf">Economist</a>, <a href="https://www.gutenberg.org/ebooks/37134">Elements of Style(1920)</a>, <a href="https://www.cs.columbia.edu/~hgs/etc/writing-bugs.html">Columbia University</a>, and <a href="https://www.pgdp.net/wiki/Main_Page">Distributed Proofreader's wiki</a>.</p>
+                <p>For word choice try: <a href="https://www.powerthesaurus.org/">Power Thesaurus</a>, <a href="https://www.losethevery.com/">lose the "very"</a>, <a href="https://carefulwords.com/">Careful Words</a>, and <a href="https://sjsu.edu/writingcenter/docs/handouts/Conjunctive%20Adverbs.pdf">Conjunctions</a>.</p>
+            </details>
+            <details id="alternatives-collapsible">
+                <summary>
+                    Alternatives (because somebody already did it better.)
+                </summary>
+                <p><a href="https://blog.afterthedeadline.com">After The Deadline</a> has proofreading tips&amp;tricks</p>
+                <p>Ask a friend or teacher for help.</p>
+                Computers (spellchecking software) at the problem:
+                <ul>
+                    <li>Your editor's built in spell checker</li>
+                    <li><a href="https://languagetool.org/">LanguageTool</a> (all platforms, browser extensions, freemium, open source)</li>
+                    <li><a href="https://www.slickwrite.com/">Slickwrite</a> (online)</li>
+                    <li><a href="https://grammark.org/#/">Grammark</a></li>
+                    <li><a href="https://writewithharper.com/">Harper</a> (free and open source)</li>
+                    <li><a href="https://www.grammarly.com/">Grammarly</a> and <a href="https://wordcounter.net/">Wordcounter.net</a></li>
+                    <li><a href="https://hemingwayapp.com/">Hemingway</a> (paid)</li>
+                    <li><a href="https://typely.com/">Typely</a> (free)</li>
+                    <li><a href="https://quillbot.com/spell-checker">Quillbot</a> (freemium)</li>
+                    <li><a href="https://vale.sh/">Vale.sh</a> (CLI, open-source)</li>
+                    <li><a href="https://matt.might.net/articles/shell-scripts-for-passive-voice-weasel-words-duplicates/">Matt Might's shell scripts</a></li>
+                    <li>LLMs and Chatbots</li>
+                    <li>Many others...</li>
+                </ul>
+            </details>
+        </div>
+            <div id="options">
+                <select name="display-font" id="font-selector">
+                    <option value="Papyrus">Papyrus</option>
+                    <option value="opendyslexic">Open Dyslexic</option>
+                    <option value="Times">Times New Roman</option>
+                    <option value="Impact">Impact</option>
+                    <option value="Segoe Script">Segoe Script</option>
+                    <option value="Courier">Courier New</option>
+                    <option value="Brush Script MT">Brush Script MT</option>
+                    <option value="Comic Sans MS">Comic Sans</option>
+                    <option value="Sans Forgetica">Sans Forgetica</option>
+                    <option value="Copperplate">Copperplate</option>
+                </select>
+                <input type="checkbox" id="shadow"/>
+                <label for="shadow">Shadow</label>
+                <input type="number" max="360" value="16" min="1" id="font-size-setter"/>
+                <label for="font-size-setter">Font Size</label>
+                <input type="checkbox" id="reverse"/>
+                <label for="reverse">Reverse</label>
+                <input type="checkbox" id="vertical"/>
+                <label for="vertical">Vertical</label>
+            </div>
+            <div id="text-area-wrapper">
+                <div id="text-area" contenteditable=plaintext-only autofocus spellcheck placeholder="Lorem ipsum"></div>
+            </div>
+            <script>
+                const text_area = document.getElementById("text-area");
+                const text_area_wrapper = document.getElementById("text-area-wrapper");
+                const font_selector = document.getElementById("font-selector");
+                const shadow_checkbox = document.getElementById("shadow");
+                const mirror_checkbox = document.getElementById("mirror");
+                const reverse_checkbox = document.getElementById("reverse");
+                const vertical = document.getElementById("vertical");
+                const font_size = document.getElementById("font-size-setter");
+                font_selector.addEventListener("change",function(){
+                    text_area.style.fontFamily = font_selector.value;
+                });
+                shadow_checkbox.addEventListener("change",function(){
+                    if (shadow_checkbox.checked){
+                      text_area.style.textShadow = `0 0 0.1em black`;
+                    } else {
+                      text_area.style.textShadow = "";
+                    }
+                });
+                function reverse(s){
+                    return s.split("").reverse().join("");
+                }
+                reverse_checkbox.addEventListener("change",function(){
+                  if (reverse_checkbox.checked){
+                    text_area.dir="rtl";
+                    text_area.textContent = reverse(text_area.textContent);
+                  } else {
+                    text_area.dir="";
+                    text_area.textContent = reverse(text_area.textContent);
+                  }
+                });
+                vertical.addEventListener("change",function() {
+                  if (vertical.checked){
+                    text_area.style.writingMode = "vertical-rl";
+                  } else {
+                    text_area.style.writingMode = "";
+                  }
+                });
+                font_size.addEventListener("change",function(){
+                  text_area.style.fontSize = `${font_size.value}px`;
+                });
+                window.onbeforeunload = function (event) {
+                   const confirmationMessage = "If you made any edits, you will lose them. Ensure you copied and saved any edited text.";
+                   event.preventDefault();
+                   event.returnValue = confirmationMessage;
+                   return confirmationMessage;
+                };
+            </script>
+            <style>
+                details {
+                    padding: 1em;
+                    border-radius: 1em;
+                }
+                #alternatives-collapsible {
+                    background-color: lightblue;
+                }
+                #what-to-look-for {
+                    background-color: darkseagreen;
+                }
+                #text-area {
+                    border: 0.1em black solid;
+                    font-family: 'Papyrus', serif;
+                    font-size: 16px;
+                    max-width: 90%;
+                    width: 90%;
+                    padding: 0.5em;
+                    min-height: 5em;
+                    height: fit-content;
+                    margin: auto;
+                    display: block;
+                    caret-color: firebrick;
+                }
+                label[for=shadow] {
+                    text-shadow: 0.1em 0.1em 0.2em gray;
+                }
+                @import url('https://fonts.cdnfonts.com/css/segoe-script');
+                @import url('https://fonts.cdnfonts.com/css/sans-forgetica');
+                @import url('https://fonts.cdnfonts.com/css/open-dyslexic');
+            </style>
+        </div>
+    </body>
+</html>
