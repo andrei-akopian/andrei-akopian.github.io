@@ -2,6 +2,8 @@
 <html>
     <head>
         <title>Manual Proofreading Tool</title>
+        <base target="_blank">
+        <meta name="description" content="Online tool for manually proofreading text."/>
     </head>
     <body>
         <div id="guide">
@@ -26,9 +28,11 @@
                     <li><a href="https://www.visualthesaurus.com/cm/teachersatwork/the-case-against-adverbs/">Adverbs</a></li>
                     <li><a href="https://dynomight.net/2021/02/07/writing-as-a-craft/"><strong>Clarity</strong></a></li>
                     <li>Spelling mistakes</li>
+                    <li>Repetition</li>
+                    <li>Connectivity</li>
                 </ul>
                 <p>More on that from <a href="https://managebetter.com/blog/writing-at-amazon">Amazon</a>, <a href="https://www.stylemanual.gov.au/">Austrailian Government</a>, <a href="https://robertheaton.com/2018/12/06/a-blogging-style-guide/">a blogger</a>, <a href="https://cdn.static-economist.com/sites/default/files/store/Style_Guide_2015.pdf">Economist</a>, <a href="https://www.gutenberg.org/ebooks/37134">Elements of Style(1920)</a>, <a href="https://www.cs.columbia.edu/~hgs/etc/writing-bugs.html">Columbia University</a>, and <a href="https://www.pgdp.net/wiki/Main_Page">Distributed Proofreader's wiki</a>.</p>
-                <p>For word choice try: <a href="https://www.powerthesaurus.org/">Power Thesaurus</a>, <a href="https://www.losethevery.com/">lose the "very"</a>, <a href="https://carefulwords.com/">Careful Words</a>, and <a href="https://sjsu.edu/writingcenter/docs/handouts/Conjunctive%20Adverbs.pdf">Conjunctions</a>.</p>
+                <p>For word choice try: <a href="https://www.powerthesaurus.org/">Power Thesaurus</a>, <a href="https://www.losethevery.com/">lose the "very"</a>, <a href="https://carefulwords.com/">Careful Words</a>, and <a href="https://www.smart-words.org/linking-words/linking-words.pdf">Linking Words</a>.</p>
             </details>
             <details id="alternatives-collapsible">
                 <summary>
@@ -38,7 +42,7 @@
                 <p>Ask a friend or teacher for help.</p>
                 Computers (spellchecking software) at the problem:
                 <ul>
-                    <li>Your editor's built in spell checker</li>
+                    <li><a href="https://doc.new/">Your editor's built in spell checker</a></li>
                     <li><a href="https://languagetool.org/">LanguageTool</a> (all platforms, browser extensions, freemium, open source)</li>
                     <li><a href="https://www.slickwrite.com/">Slickwrite</a> (online)</li>
                     <li><a href="https://grammark.org/#/">Grammark</a></li>
@@ -57,7 +61,7 @@
             <div id="options">
                 <select name="display-font" id="font-selector">
                     <option value="Papyrus">Papyrus</option>
-                    <option value="opendyslexic">Open Dyslexic</option>
+                    <option value="OpenDyslexic">Open Dyslexic</option>
                     <option value="Times">Times New Roman</option>
                     <option value="Impact">Impact</option>
                     <option value="Segoe Script">Segoe Script</option>
@@ -75,6 +79,7 @@
                 <label for="reverse">Reverse</label>
                 <input type="checkbox" id="vertical"/>
                 <label for="vertical">Vertical</label>
+                <span id="word-counter">0 words</span>
             </div>
             <div id="text-area-wrapper">
                 <div id="text-area" contenteditable=plaintext-only autofocus spellcheck placeholder="Lorem ipsum"></div>
@@ -88,6 +93,7 @@
                 const reverse_checkbox = document.getElementById("reverse");
                 const vertical = document.getElementById("vertical");
                 const font_size = document.getElementById("font-size-setter");
+                const word_counter = document.getElementById("word-counter");
                 font_selector.addEventListener("change",function(){
                     text_area.style.fontFamily = font_selector.value;
                 });
@@ -126,6 +132,10 @@
                    event.returnValue = confirmationMessage;
                    return confirmationMessage;
                 };
+                text_area.addEventListener("input",function(){
+                  let words = text_area.textContent.trim().split(/\s+/).length;
+                  word_counter.textContent = `${words} words`
+                });
             </script>
             <style>
                 @import url('https://fonts.cdnfonts.com/css/segoe-script');
@@ -140,6 +150,9 @@
                 }
                 #what-to-look-for {
                     background-color: darkseagreen;
+                }
+                #word-counter {
+                    margin-left:1em;
                 }
                 #text-area {
                     border: 0.1em black solid;

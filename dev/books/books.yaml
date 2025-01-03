@@ -112,3 +112,11 @@
   links:
     GoogleBooks: https://www.google.com/books/edition/The_Data_Science_Design_Manual/rHIqDwAAQBAJ
     Goodreads: https://www.goodreads.com/book/show/34266283-the-data-science-design-manual
+- title: Momo
+  subheading: a story about stolen time
+  author: Michael Ende
+  description: and then you notice the metaphor
+  hotlink: https://en.wikipedia.org/wiki/Momo_(novel)
+  links:
+    Wikipedia: https://en.wikipedia.org/wiki/Momo_(novel)
+    Goodreads: https://www.goodreads.com/book/show/1408839
