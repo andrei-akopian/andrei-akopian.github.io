@@ -1,25 +1,133 @@
 body {
-    padding: 20px;
-    margin: auto;
-    max-width: 800px;
+    margin: 0;
+    height: 100vh;
+    --machine-color: steelblue;
 }
 
-.tool-table {
-    display: table;
-    width: 800px;
+#main-grid {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 1fr 1fr 40% 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
 }
 
-.tool-cell {
-    float: left;
-    width: 50%;
+#page-title {
+    grid-area: 1 / 1 / 1 / 1;
+    text-align: center;
 }
 
-img {
-    width: 200px;
-    height: 200px;
+#simplify-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-p {
-    margin: 5px;
-    height: 40px;
+.simplify-link-button {
+    background-color: lightblue;
+    border: dashed black;
+    padding: 0.5rem;
+}
+
+.shelf-div {
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: column;
+}
+
+.shelf-wood {
+    height: 1.5rem;
+    width: 100%;
+    background-color: brown;
+    text-align: center;
+    color: lightgray;
+}
+
+.machine-div {
+    background: var(--machine-color);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: column;
+    font-family: Courier;
+}
+
+.machine-label {
+    height: 1.5rem;
+    width: fit-content;
+    text-align: center;
+    color: lightgray;
+}
+
+.icon {
+    height: 8rem;
+    width: 8rem;
+    text-align: center;
+}
+
+.icon img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.emoji-icon {
+    font-size: 5rem;
+    text-decoration: none;
+    height: 1.05em;
+}
+
+.description {
+    justify-content: center;
+    text-align: center;
+}
+
+.split-container {
+    position: relative;
+}
+
+.slant {
+    background-color: var(--machine-color);
+    width: 100%;
+    height: 100%;
+    transform: translateX(-0.05rem);
+    overflow: hidden;
+}
+
+.slant-shelf {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    position: absolute;
+    box-sizing: border-box;
+    border-bottom: 1.5rem solid brown;
+    z-index: -1;
+}
+
+#row-1-slant {
+    clip-path: polygon(0% 0, 20% 100%, 0% 100%);
+}
+
+#row-2-slant {
+    clip-path: polygon(0% 0, 20% 0, 40% 100%, 0% 100%);
+}
+
+#row-3-slant {
+    clip-path: polygon(0% 0, 40% 0, 60% 100%, 0% 100%);
+}
+
+#row-4-slant {
+    clip-path: polygon(0% 0, 60% 0, 80% 100%, 0% 100%);
+}
+
+#row-5-slant {
+    clip-path: polygon(0% 0, 80% 0%, 100% 100%, 0% 100%);
+}
+
+.book {
+    width: 80%;
+    height: 1rem;
+    background-color: chocolate;
+    border: 0.1em solid sienna;
 }
