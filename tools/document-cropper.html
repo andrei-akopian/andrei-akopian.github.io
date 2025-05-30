@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Simple Document Scanner Cropper</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📸</text></svg>">
+  </head>
+  <body>
+    <main>
+        <h1>Simple Document Scanner Cropper</h1>
+        <div id="file-drop-zone">
+          <p>Upload or drag and drop <code>.jpeg</code> or <code>.png</code> files.</p>
+          <input type="file" id="rawdocument-input" name="rawdocument-input" accept="image/png, image/jpeg"/>
+        </div>
+        <canvas id="editor"></canvas><br/>
+        <button id="convert-button">Convert</button><br/>
+        <canvas id="result"></canvas><br/>
+        <button id="download-button">Download PDF</button><br/>
+        <p>Made using <a href="https://docs.opencv.org/">OpenCV.js</a>, <a href="https://colonelparrot.github.io/jscanify/">jscanify</a>, and <a href="https://github.com/parallax/jsPDF">jsPDF</a>. Created in May 2025 by <a href="https://github.com/andrei-akopian">Andrei</a></p>
+    </main>
+    <script src="https://docs.opencv.org/4.7.0/opencv.js" async></script>
+    <!-- warning: loading OpenCV can take some time. Load asynchronously -->
+    <script src="https://cdn.jsdelivr.net/gh/ColonelParrot/jscanify@master/src/jscanify.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/jspdf.umd.min.js"></script>
+    <script>
+    const filedropzone = document.getElementById("file-drop-zone");
+    const rawdocument_input = document.getElementById('rawdocument-input');
+    const convert_button = document.getElementById('convert-button');
+    convert_button.addEventListener('click',conversion_with_cornerpoints);
+    const crosshair_radius = 40;
+    let scanner;
+    window.addEventListener("load", function(){
+        scanner = new jscanify();
+    })
+    let image = new Image();
+
+    let corners = [];
+    let selected_corner = 0;
+
+    const editor = document.getElementById("editor");
+    const result = document.getElementById("result");
+
+    let resultCtx = result.getContext("2d");
+    const canvasCtx = editor.getContext("2d", { willReadFrequently: true });
+
+    function clearCanvas() {
+      canvasCtx.clearRect(0, 0, editor.width, editor.height);
+    }
+
+    //file uploads
+    filedropzone.addEventListener('drop',dropHandler);
+    filedropzone.addEventListener('dragover',preventDefaultDropBehavior);
+    filedropzone.addEventListener('dragenter',preventDefaultDropBehavior);
+    filedropzone.addEventListener('dragleave',preventDefaultDropBehavior);
+    filedropzone.addEventListener('dragend',preventDefaultDropBehavior);
+    function preventDefaultDropBehavior(event) {
+      event.preventDefault();
+    };
+    function dropHandler(event) {
+      event.preventDefault();
+      loadAndReadFile(event.dataTransfer.files[0]);
+    }
+    rawdocument_input.addEventListener('change', function(event) {
+      const file = event.target.files[0];
+      loadAndReadFile(file);
+    });
+    function loadAndReadFile(file){
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = processLoadedFile;
+        console.log(`Loading file ${file.name}`);
+        reader.readAsDataURL(file);
+      }
+    }
+    function processLoadedFile(e){
+      image = new Image();
+      image.onload = function() {
+        editor.width = image.width;
+        editor.height = image.height;
+        clearCanvas();
+        canvasCtx.drawImage(image, 0, 0);
+      };
+      image.src = e.target.result;
+    }
+    editor.addEventListener("mousedown",process_mouse_press)
+
+    function conversion_with_cornerpoints(){
+      let adjusted_corner_points;
+      if (corners.length==0){
+        let contur = scanner.findPaperContour(cv.imread(image));
+        adjusted_corner_points = scanner.getCornerPoints(contur);
+        Object.keys(adjusted_corner_points).forEach(key => {
+          let cordinates = adjusted_corner_points[key];
+          corners.push(cordinates);
+          drawCrosshair(cordinates);
+        });
+      } else if (corners.length<4){
+        alert("Select all 4 corners.");
+        return;
+      } else if (corners.length==4){
+        adjusted_corner_points = corner_point_adjuster(corners);
+      }
+      let true_size = determine_true_size(adjusted_corner_points);
+      let width = true_size.aspect_ratio*true_size.scale_max;
+      let height = true_size.scale_max/true_size.aspect_ratio;
+      const resultCanvas = scanner.extractPaper(image,width,height,adjusted_corner_points);
+      result.height = height;
+      result.width = width;
+      resultCtx.drawImage(resultCanvas, 0, 0);
+    }
+
+    function determine_true_size(adjusted_corner_points){
+      let top = calculate_distance(adjusted_corner_points.topLeftCorner,adjusted_corner_points.topRightCorner);
+      let bottom = calculate_distance(adjusted_corner_points.bottomLeftCorner,adjusted_corner_points.bottomRightCorner);
+      let left = calculate_distance(adjusted_corner_points.topLeftCorner,adjusted_corner_points.bottomLeftCorner);
+      let right = calculate_distance(adjusted_corner_points.topRightCorner,adjusted_corner_points.bottomRightCorner);
+      let x = (top+bottom)/2; // I give up
+      let y = (left+right)/2;
+      return {
+        aspect_ratio: x/y,
+        scale_max: Math.max(left,right),
+        scale_avg: y,
+      };
+    }
+
+    function calculate_distance(p1,p2){
+      return Math.sqrt((p1.x-p2.x)**2+(p1.y-p2.y)**2);
+    }
+
+    function corner_point_adjuster(corners){
+      corners.sort((a,b)=>{return (a.x-b.x)});
+      let left = corners.slice(0,2);
+      left.sort((a,b)=>{return (a.y-b.y)});
+      let right = corners.slice(2,4);
+      right.sort((a,b)=>{return (a.y-b.y)});
+      return {
+        topLeftCorner: left[0],
+        topRightCorner: right[0],
+        bottomLeftCorner: left[1],
+        bottomRightCorner: right[1]
+      }
+    }
+
+    function findClosestPointIndex(points,mouse){
+      let i_min = 0;
+      let d_min = Infinity;
+      for (let i=0; i<4; i++){
+        let d = calculate_distance(points[i],mouse);
+        if (d<d_min){
+          d_min = d;
+          i_min = i;
+        }
+      }
+      return i_min;
+    }
+
+    function process_mouse_press(event){
+      let mouse_pos = getMousePos(editor,event);
+      if (corners.length<4){
+        corners.push(mouse_pos);
+        drawCrosshair(mouse_pos);
+      } else {
+        corners[findClosestPointIndex(corners,mouse_pos)] = mouse_pos;
+        canvasCtx.drawImage(image,0,0);
+        for (let point of corners){
+          drawCrosshair(point);
+        }
+      }
+    }
+
+    function drawCrosshair(point){
+      canvasCtx.beginPath();
+      canvasCtx.moveTo(point.x,point.y-crosshair_radius);
+      canvasCtx.lineTo(point.x,point.y+crosshair_radius);
+      canvasCtx.moveTo(point.x-crosshair_radius,point.y);
+      canvasCtx.lineTo(point.x+crosshair_radius,point.y);
+      canvasCtx.arc(point.x, point.y, crosshair_radius, 0, 2 * Math.PI);
+      canvasCtx.stroke();
+    }
+
+    // https://stackoverflow.com/questions/17130395/real-mouse-position-in-canvas
+    function getMousePos(editor, event) {
+      var rect = editor.getBoundingClientRect(), // abs. size of element
+        scaleX = editor.width / rect.width,    // relationship bitmap vs. element for x
+        scaleY = editor.height / rect.height;  // relationship bitmap vs. element for y
+      return {
+        x: (event.clientX - rect.left) * scaleX,   // scale mouse coordinates after they have
+        y: (event.clientY - rect.top) * scaleY     // been adjusted to be relative to element
+      }
+    }
+
+    // https://stackoverflow.com/questions/23681325/convert-canvas-to-pdf
+    print_pdf =  function() {
+      let imgData = result.toDataURL("image/png", 1.0); // mime-type, quality 0.0-1.0
+      let pdf;
+      let width = result.width;
+      let height = result.height;
+
+      if (width > height){
+        pdf = new jspdf.jsPDF({
+          orientation:'landscape',
+          unit: 'px',
+          format: [width, height],
+          hotfixes: ["px_scaling"]
+        });
+      }
+      else {
+        pdf = new jspdf.jsPDF({
+          orientation:'portrait',
+          unit: 'px',
+          format: [width, height],
+          hotfixes: ["px_scaling"]
+        });
+      }
+
+      pdf.addImage(imgData, 'PNG', 0, 0);
+      pdf.save("document-scann.pdf");
+    };
+
+    window.print = print_pdf;
+
+    document.getElementById('download-button').addEventListener('click',print_pdf);
+
+    </script>
+    <style>
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        input {
+            font-size: 1.2em;
+        }
+        button {
+            font-size: 1.2em;
+        }
+        #file-drop-zone {
+          border: 5px dashed gray;
+          height: 6em;
+          padding: 1em;
+          margin-bottom: 1em;
+        }
+    </style>
+  </body>
+</html>
