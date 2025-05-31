@@ -80,13 +80,14 @@
         editor.width = image.width;
         editor.height = image.height;
         clearCanvas();
+        corners = [];
         canvasCtx.drawImage(image, 0, 0);
       };
       image.src = e.target.result;
     }
     editor.addEventListener("mousedown",process_mouse_press)
 
-    function conversion_with_cornerpoints(){
+    function adjust_corner_points(corners){
       let adjusted_corner_points;
       if (corners.length==0){
         let contur = scanner.findPaperContour(cv.imread(image));
@@ -98,13 +99,22 @@
         });
       } else if (corners.length<4){
         alert("Select all 4 corners.");
-        return;
+        return false;
       } else if (corners.length==4){
         adjusted_corner_points = corner_point_adjuster(corners);
       }
+      return adjusted_corner_points;
+    }
+
+    function conversion_with_cornerpoints(){
+      let adjusted_corner_points=adjust_corner_points(corners);
+      if (adjusted_corner_points==false){
+        return;
+      }
       let true_size = determine_true_size(adjusted_corner_points);
       let width = true_size.aspect_ratio*true_size.scale_max;
-      let height = true_size.scale_max/true_size.aspect_ratio;
+      let height = true_size.scale_max;
+      console.log(`Extracting paper of size w=${width} h=${height} aspect-ratio=${true_size.aspect_ratio} scale=${true_size.scale_max}`);
       const resultCanvas = scanner.extractPaper(image,width,height,adjusted_corner_points);
       result.height = height;
       result.width = width;
@@ -118,10 +128,129 @@
       let right = calculate_distance(adjusted_corner_points.topRightCorner,adjusted_corner_points.bottomRightCorner);
       let x = (top+bottom)/2; // I give up
       let y = (left+right)/2;
+
+      console.log(`Raw document side lengths top=${top} bottom=${bottom} right=${right} left=${left}. Calculating original aspect ratio.`);
+
+      let x_error = Math.abs(top-bottom)/x;
+      let y_error = Math.abs(left-right)/y;
+
+      if (x_error>0.05 && y_error>0.05){
+        console.log("Using more advanced true size reconstructor");
+        return determine_true_size_clever(adjusted_corner_points);
+      }
+
       return {
         aspect_ratio: x/y,
         scale_max: Math.max(left,right),
         scale_avg: y,
+      };
+    }
+
+    function linear_eqution(p1,p2){
+      let slope = (p2.y-p1.y)/(p2.x-p1.x);
+      let y_intercept = p1.y-p1.x*slope;
+      return {
+        slope: slope,
+        y_intercept: y_intercept,
+      };
+    }
+
+    function point_slope_linear_equation(p,s){ // unused
+      let slope = s;
+      let y_intercpet = p1.y-s*(p1.x);
+      return {
+        slope: slope,
+        y_intercept: y_intercept,
+      };
+    }
+
+    function solve_linear_equations(eq1,eq2){
+      let x = (eq2.y_intercept-eq1.y_intercept)/(eq1.slope - eq2.slope);
+      let y = eq1.slope*x + eq1.y_intercept;
+      return {
+        x: x,
+        y: y,
+      };
+    }
+
+    function midpoint(p1,p2){ // unused
+      return {
+        x: (p1.x+p2.x)/2,
+        y: (p1.y+p2.y)/2,
+      };
+    }
+
+    function determine_true_size_clever(adjusted_corner_points){
+        // This method: https://math.stackexchange.com/a/1340061
+        // Doesn't really work, maybe I screwed up alg
+        let top_eq = linear_eqution(adjusted_corner_points.topLeftCorner,adjusted_corner_points.topRightCorner);
+        let bottom_eq = linear_eqution(adjusted_corner_points.bottomLeftCorner,adjusted_corner_points.bottomRightCorner);
+        let left_eq = linear_eqution(adjusted_corner_points.topLeftCorner,adjusted_corner_points.bottomLeftCorner);
+        let right_eq = linear_eqution(adjusted_corner_points.topRightCorner,adjusted_corner_points.bottomRightCorner);
+        let horizon_horizontal_point = solve_linear_equations(top_eq,bottom_eq);
+        let horizon_vertical_point = solve_linear_equations(right_eq,left_eq);
+        console.log(horizon_horizontal_point, horizon_vertical_point);
+        let horizon_eq = linear_eqution(horizon_horizontal_point,horizon_vertical_point);
+        let horizon_length = calculate_distance(horizon_horizontal_point,horizon_vertical_point);
+        let shift_distance = horizon_length/2/Math.cos(Math.atan(horizon_eq.slope));
+        let tangent_eq = {
+          slope: horizon_eq.slope,
+          y_intercept: horizon_eq.y_intercept + shift_distance,
+        };
+        // drawings
+        // drawLine(top_eq);
+        // drawLine(bottom_eq);
+        // drawLine(left_eq);
+        // drawLine(right_eq);
+        // drawLine(tangent_eq);
+
+        let top_p = solve_linear_equations(tangent_eq,top_eq);
+        let bottom_p = solve_linear_equations(tangent_eq,bottom_eq);
+        let right_p = solve_linear_equations(tangent_eq,right_eq);
+        let left_p = solve_linear_equations(tangent_eq,left_eq);
+
+        let height = calculate_distance(top_p,bottom_p);
+        let width = calculate_distance(left_p,right_p);
+        // output
+        let left = calculate_distance(adjusted_corner_points.topLeftCorner,adjusted_corner_points.bottomLeftCorner);
+        let right = calculate_distance(adjusted_corner_points.topRightCorner,adjusted_corner_points.bottomRightCorner);
+        return {
+          aspect_ratio: width/height,
+          scale_max: Math.max(left,right),
+          scale_avg: (left+right)/2
+        };
+    }
+
+    function angle_between_points(p1,p2,p3){
+      let v1 = [p1.x-p2.x,p1.y-p2.y];
+      let v3 = [p3.x-p2.x,p3.y-p2.y];
+      let v1_mag = calculate_distance(p1,p2);
+      let v3_mag = calculate_distance(p3,p2);
+      let angle = Math.acos((v1[0]*v3[0]+v1[1]*v3[1])/(v1_mag*v3_mag));
+      return angle;
+    }
+
+    function determine_true_size_stupid(adjusted_corner_points){
+      let small = angle_between_points(
+        adjusted_corner_points.topRightCorner,
+        adjusted_corner_points.bottomRightCorner,
+        adjusted_corner_points.topLeftCorner,
+      )
+      let big = angle_between_points(
+        adjusted_corner_points.topRightCorner,
+        adjusted_corner_points.bottomRightCorner,
+        adjusted_corner_points.bottomLeftCorner,
+      )
+      console.log(small,big,small/big);
+      let aspect_ratio = 1/Math.tan(small/big*Math.PI/2);
+      console.log(aspect_ratio);
+      // output
+      let left = calculate_distance(adjusted_corner_points.topLeftCorner,adjusted_corner_points.bottomLeftCorner);
+      let right = calculate_distance(adjusted_corner_points.topRightCorner,adjusted_corner_points.bottomRightCorner);
+      return {
+        aspect_ratio: aspect_ratio,
+        scale_max: Math.max(left,right),
+        scale_avg: (left+right)/2
       };
     }
 
@@ -168,6 +297,13 @@
           drawCrosshair(point);
         }
       }
+    }
+
+    function drawLine(eq){
+      canvasCtx.beginPath();
+      canvasCtx.moveTo(0,eq.y_intercept);
+      canvasCtx.lineTo(editor.width,eq.slope*editor.width+eq.y_intercept);
+      canvasCtx.stroke();
     }
 
     function drawCrosshair(point){
