@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>VCard QR Code</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta name="description" content="Description Goes Here" />
+    </head>
+    <body>
+        <main>
+            <h1>VCard QR Code Generator</h1>
+            <div id="forms">
+                <p>Fist Name: <input type="text" id="first" placeholder="John"/></p>
+                <p>Last Name: <input type="text" id="last" placeholder="Doe"/></p>
+                <p>
+                    Gender:
+                    <select id="gender">
+                        <option value="U">Unknown</option>
+                        <option value="M">Male</option>
+                        <option value="F">Female</option>
+                        <option value="O">Other</option>
+                        <option value="N">N/A None or Not Applicable</option>
+                    </select>
+                </p>
+                <p>Date of Birth: <input type="date" id="DOB" value="-------"/></p>
+                <p>Email: <input type="text" id="email"/></p>
+                <p>Phone: <input type="text" id="phone"/></p>
+                <p>Occupation: <input type="text" id="occupation"/></p>
+                <p>Note/Comments: <textarea id="note"></textarea></p>
+            </div>
+            Remember to <button id="regenerate-button" onclick="regenerateQRCode()">Generate</button>
+            <button onclick="regenerateQRCode()">Download QR Code (or left click on it)</button>
+            <button onclick="download()">Download Vcard (<code>.vcf</code>)</button>
+            <div id="qrcode"></div>
+            <p>Made using <a href="https://kelseykm.github.io/vcard4/">vcard4</a> and <a href="https://davidshimjs.github.io/qrcodejs/">qrcode.js</a>.</p>
+            <details>
+                <summary>Technical Notes</summary>
+                <p><a href="https://www.rfc-editor.org/rfc/rfc6350#section-6.6.1">The RFC spec for Vcard</a></p>
+                <p>The size of a buisness card is: <a href="https://en.wikipedia.org/wiki/ISO/IEC_7810">IEC 7810 Wikipedia</a> if you are into that.</p>
+                https://www.w3.org/2002/12/cal/vcard-notes.html
+            </details>
+        </main>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" integrity="sha512-CNgIRecGo7nphbeZ04Sc13ka07paqdeTu0WR1IM4kNcpmBAUSHSQX0FslNhTDadL4O5SAGapGt4FodqL8My0mA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <!-- <script src="https://unpkg.com/vcard4@4.0.1/dist/index.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
+        <script>
+        let qrcode_container = document.getElementById("qrcode");
+        qrcode_container.style.display = "none";
+        let qrcode_options = {
+         	text: "https://example.com",
+         	width: 256,
+         	height: 256,
+         	colorDark : "#000000",
+         	colorLight : "#ffffff",
+         	correctLevel : QRCode.CorrectLevel.L
+        };
+        let qrcode = new QRCode(qrcode_container,qrcode_options);
+
+        let first = document.getElementById("first");
+        let last = document.getElementById("last");
+        let phone = document.getElementById("phone");
+        let email = document.getElementById("email");
+        let gender = document.getElementById("gender");
+        let occupation = document.getElementById("occupation");
+        let note = document.getElementById("note");
+        let dob = document.getElementById("DOB")
+
+        function gatherVCard(){
+          let card =
+`BEGIN:VCARD
+VERSION:3.0
+FN:${first.value} ${last.value}
+N:${last.value};${first.value};;;
+TEL;VALUE=uri;PREF=1;TYPE=cell:tel:${phone.value}
+BDAY:${dob.value.replace("-","")}
+TITLE:${occupation.value}
+GENDER:${gender.value}
+EMAIL;PREF=1:${email.value}
+NOTE:${note.value}
+END:VCARD`;
+          return card;
+        }
+
+        function regenerateQRCode(){
+          qrcode_container.style.display = "block";
+          qrcode.clear();
+          qrcode.makeCode(gatherVCard());
+        }
+
+        function downloadQR(){
+            var link = document.createElement('a');
+            link.download = `${first.value}_vcard_QRcode.png`;
+            link.href = qrcode_container.firstChild.toDataURL();
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function download(){
+            const blob = new Blob([gatherVCard()], {type: 'text/vcard;charset=utf-8'});
+            const vcardUrl = URL.createObjectURL(blob);
+            let link = document.createElement("a");
+            link.href = vcardUrl;
+            link.download = `${first.value}.vcf`
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+        </script>
+        <style>
+            main {
+                margin: auto;
+                width: fit-content;
+            }
+            #regenerate-button {
+                background-color: orangered;
+            }
+        </style>
+    </body>
+</html>
