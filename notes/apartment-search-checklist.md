@@ -11,13 +11,13 @@ Inside
   - Gas
   - Water
   - Internet
-- Pumbing
+- Plumbing
   - Tap pressure (tends to be lower on higher floors)
   - Water tap designs and quality
   - Is tap water safe to drink?
   - Water heating source/system
 - Size
-- Area (useable area if the rooms are a wierd shape)
+- Area (useable area if the rooms are a weird shape)
 - Cieling height
 - Electricity
   - Outlets
@@ -29,9 +29,10 @@ Inside
   - AC and HVAC
   - Heating
   - Stove and gas
+    - Where will the steam and heat of the stove go?
 - Building Design
   - Insulation and thermal efficiency
-  - The color of the building collects or repells heat
+  - The color of the building collects or repels heat
 - Floor, Hallways, Elevator, and Stairs
 - Package delivery
 - Mailbox
@@ -40,7 +41,9 @@ Inside
   - Single window
   - Any smells from outside?
 - Sound
-- Noise
+- Outside Noise
+- Room Acoustics (no echo)
+- Squeaky floor tiles and doors
 - Smell
 - Garage
 - Bike Storage
@@ -55,7 +58,8 @@ Inside
 - Elevators have longer wait times at higher floors (probably)
 - Gym, laundary, roof access
 - Window view
-  - Movement of the sun. When and in which rooms there will be sunlight. Are other buildings blocking the sun?
+  - Movement of the sun. When and in which rooms there will be sunlight. 
+  - Are other buildings blocking the sun?
   - Does furniture fit in good places with respect to windows and sunlight
 - Number of apartments on the floor and in building
 
@@ -74,14 +78,14 @@ Outside
 - Stores
 - Distance to points of interest
 - Check phone signal
-- Neighborhood crime rates
+- Neighborhood
   - Loud music or bad crowd in the area
   - Smoke and drugs in the air
 - Questions to ask neighbors:
   - "What is the **worst** thing about this location/apartment?"
 
-Paper and Administrative
-------------------------
+Papers and Administrative
+-------------------------
 
 - refuse bait and switch apartments.
 - have a second person (friend or family member) with you
