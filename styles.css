@@ -5,11 +5,11 @@ body {
 }
 
 a {
-    color: rgb(200,200,200);
+    color: rgb(200, 200, 200);
 }
 
 a:visited {
-    color: rgb(180,180,180);
+    color: rgb(180, 180, 180);
 }
 
 #main-grid {
@@ -34,6 +34,7 @@ a:visited {
     color: #0000EE;
     text-decoration-line: none;
 }
+
 .simplify-link-button {
     color: #0000EE;
     text-decoration-line: none;
@@ -160,8 +161,8 @@ a:visited {
     writing-mode: sideways-rl;
 }
 
-.book-vertical > a {
-    color: #704010;
+.book-vertical>a {
+    color: #55320f;
 }
 
 .books-wrapper {
