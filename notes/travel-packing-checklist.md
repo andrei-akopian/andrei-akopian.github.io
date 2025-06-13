@@ -45,6 +45,7 @@ Packing List
   - Adapters for everything (and converter for plug standard at destination)
 - Download map of road and destination
 - Plastic bags of various sizes just in case
+- Tissues. drinks spill, toilet paper might not be there
 - Smaller bag such as a drawstring bag
 - Pen and paper
 - paperback or ebook or audiobook
