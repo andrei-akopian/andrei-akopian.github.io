@@ -11,25 +11,30 @@
     <main>
         <h1>Simple Document Scanner Cropper</h1>
         <div id="file-drop-zone">
-          <p>Upload or drag and drop <code>.jpeg</code> or <code>.png</code> files.</p>
-          <input type="file" id="rawdocument-input" name="rawdocument-input" accept="image/png, image/jpeg"/>
+          <p>Upload or drag and drop <code>.jpeg, .jpg</code> or <code>.png</code> files.</p>
+          <input type="file" id="rawdocument-input" name="rawdocument-input" accept="image/png, image/jpeg"/> <!-- The image/jpeg mime type accounts for both jpeg and jpg -->
         </div>
         <canvas id="editor"></canvas><br/>
-        Document Size:
-        <select id="size-selector">
-          <option value="estimated">Estimated</option>
-          <option value="banking_card">Banking Card 85.60x53.98mm (ISO/IEC 7810)</option> <!-- https://en.wikipedia.org/wiki/ISO/IEC_7810 -->
-          <option value="us_letter">U.S. Letter 215.9x279.4mm</option> <!-- https://en.wikipedia.org/wiki/Letter_(paper_size) -->
-          <option value="a4">A4 210x297mm</option> <!-- https://en.wikipedia.org/wiki/ISO_216#A_series -->
-        </select>
+        <div id="size-settings">
+          Document Size:
+          <select id="size-selector">
+            <option value="estimated">Estimated</option>
+            <option value="banking_card">Banking Card 85.60x53.98mm (ISO/IEC 7810)</option> <!-- https://en.wikipedia.org/wiki/ISO/IEC_7810 -->
+            <option value="us_letter">U.S. Letter 215.9x279.4mm</option> <!-- https://en.wikipedia.org/wiki/Letter_(paper_size) -->
+            <option value="a4">A4 210x297mm</option> <!-- https://en.wikipedia.org/wiki/ISO_216#A_series -->
+          </select>
+        </div>
         <button id="convert-button">Convert</button><br/>
         <canvas id="result"></canvas><br/>
         <button id="download-button">Download PDF</button><br/>
-        Image Quality: <input id="pdf-quality-input" type="number" min="0.1" step="0.05" max="1.0" value='1.0'/>
+        <div id="image-quality-settings">
+          Image Quality (between 0 and 1, to decrease file size): <input id="pdf-quality-input" type="number" min="0.1" step="0.05" max="1.0" value='1.0'/>
+        </div>
+        <p id="next-steps">To merge or edit use <a href="https://www.pdftool.org/en">PDFtool</a> (online, client-side), <a href="https://www.pdfgear.com/">PDFGear</a> (application, all platforms), <a href="https://pdfsam.org/">PDFsam</a> (application, all platforms).</p>
         <p>Made using <a href="https://docs.opencv.org/">OpenCV.js</a>, and <a href="https://github.com/parallax/jsPDF">jsPDF</a>. Created in May 2025 by <a href="https://github.com/andrei-akopian">Andrei</a></p>
     </main>
     <script src="https://docs.opencv.org/4.7.0/opencv.js" async></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/jspdf.umd.min.js" async></script>
     <script>
       const filedropzone = document.getElementById("file-drop-zone");
       const rawdocument_input = document.getElementById('rawdocument-input');
@@ -402,10 +407,19 @@
             align-items: center;
         }
         input {
-            font-size: 1.2em;
+          font-size: 1.2em;
         }
         button {
-            font-size: 1.2em;
+          font-size: 1.2em;
+        }
+        #size-settings {
+          font-size: 1.2em;
+        }
+        #size-selector {
+          font-size: 1em;
+        }
+        #image-quality-settings {
+          font-size: 1.2em;
         }
         #file-drop-zone {
           border: 5px dashed gray;
@@ -416,6 +430,9 @@
         canvas {
           max-width: 100vw;
           max-height: 100vh;
+        }
+        #next-steps {
+          font-size: 1.2em;
         }
     </style>
   </body>
