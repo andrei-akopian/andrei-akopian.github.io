@@ -18,19 +18,17 @@
         Document Size:
         <select id="size-selector">
           <option value="estimated">Estimated</option>
-          <option value="banking_card">Banking Card 85.60x53.98mm (ISO/IEC 7810)</option> <!--https://en.wikipedia.org/wiki/ISO/IEC_7810-->
-          <option value="us_letter">U.S. Letter 215.9x279.4mm</option> <!--https://en.wikipedia.org/wiki/Letter_(paper_size)-->
-          <option value="a4">A4 210x297mm</option> <!---->
+          <option value="banking_card">Banking Card 85.60x53.98mm (ISO/IEC 7810)</option> <!-- https://en.wikipedia.org/wiki/ISO/IEC_7810 -->
+          <option value="us_letter">U.S. Letter 215.9x279.4mm</option> <!-- https://en.wikipedia.org/wiki/Letter_(paper_size) -->
+          <option value="a4">A4 210x297mm</option> <!-- https://en.wikipedia.org/wiki/ISO_216#A_series -->
         </select>
         <button id="convert-button">Convert</button><br/>
         <canvas id="result"></canvas><br/>
         <button id="download-button">Download PDF</button><br/>
         Image Quality: <input id="pdf-quality-input" type="number" min="0.1" step="0.05" max="1.0" value='1.0'/>
-        <p>Made using <a href="https://docs.opencv.org/">OpenCV.js</a>, <a href="https://colonelparrot.github.io/jscanify/">jscanify</a>, and <a href="https://github.com/parallax/jsPDF">jsPDF</a>. Created in May 2025 by <a href="https://github.com/andrei-akopian">Andrei</a></p>
+        <p>Made using <a href="https://docs.opencv.org/">OpenCV.js</a>, and <a href="https://github.com/parallax/jsPDF">jsPDF</a>. Created in May 2025 by <a href="https://github.com/andrei-akopian">Andrei</a></p>
     </main>
     <script src="https://docs.opencv.org/4.7.0/opencv.js" async></script>
-    <!-- warning: loading OpenCV can take some time. Load asynchronously -->
-    <script src="https://cdn.jsdelivr.net/gh/ColonelParrot/jscanify@master/src/jscanify.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/3.0.1/jspdf.umd.min.js"></script>
     <script>
       const filedropzone = document.getElementById("file-drop-zone");
@@ -39,10 +37,6 @@
       const convert_button = document.getElementById('convert-button');
       convert_button.addEventListener('click',conversion_with_cornerpoints);
       const crosshair_radius = 40;
-      let scanner;
-      window.addEventListener("load", function(){
-          scanner = new jscanify();
-      })
       let image = new Image();
 
       const size_selector = document.getElementById("size-selector");
@@ -103,30 +97,47 @@
       }
       editor.addEventListener("mousedown",process_mouse_press)
 
+      function extractPaper(image,width,height,adjusted_corner_points,result_canvas){
+        // console.log(`Starting extraction at ${Date.now()}`);
+        let src = cv.imread(image);
+        let dst = new cv.Mat();
+        let dsize = new cv.Size(width, height);
+        let srcTri = cv.matFromArray(4, 1, cv.CV_32FC2, [
+          adjusted_corner_points.topLeftCorner.x, adjusted_corner_points.topLeftCorner.y,
+          adjusted_corner_points.topRightCorner.x, adjusted_corner_points.topRightCorner.y,
+          adjusted_corner_points.bottomLeftCorner.x, adjusted_corner_points.bottomLeftCorner.y,
+          adjusted_corner_points.bottomRightCorner.x, adjusted_corner_points.bottomRightCorner.y]
+        );
+        let dstTri = cv.matFromArray(4, 1, cv.CV_32FC2, [0, 0, width, 0, 0, height, width, height]);
+
+        let M = cv.getPerspectiveTransform(srcTri, dstTri);
+        cv.warpPerspective(src, dst, M, dsize, cv.INTER_LINEAR, cv.BORDER_CONSTANT, new cv.Scalar());
+
+        // console.log(`Finished extraction at ${Date.now()}`);
+        cv.imshow(result_canvas, dst);
+        src.delete(); dst.delete(); M.delete(); srcTri.delete(); dstTri.delete();
+      }
+
       function adjust_corner_points(corners){
+        // console.log(`Start Adjust Corner Points at ${Date.now()}`);
         let adjusted_corner_points;
-        if (corners.length==0){
-          let contur = scanner.findPaperContour(cv.imread(image));
-          adjusted_corner_points = scanner.getCornerPoints(contur);
-          Object.keys(adjusted_corner_points).forEach(key => {
-            let cordinates = adjusted_corner_points[key];
-            corners.push(cordinates);
-            drawCrosshair(cordinates);
-          });
-        } else if (corners.length<4){
+        if (corners.length<4){
           alert("Select all 4 corners.");
           return false;
         } else if (corners.length==4){
           adjusted_corner_points = corner_point_adjuster(corners);
         }
+        // console.log(`End Adjust Corner Points at ${Date.now()}`);
         return adjusted_corner_points;
       }
 
       function conversion_with_cornerpoints(){
-        let adjusted_corner_points=adjust_corner_points(corners);
+        console.log(`Starting New Conversion at ${Date.now()}`);
+        let adjusted_corner_points = adjust_corner_points(corners);
         if (adjusted_corner_points==false){
           return;
         }
+        // console.log("Adjusted corner points: ",adjusted_corner_points);
         let true_size = determine_true_size(adjusted_corner_points);
         
         // account for preset sizes
@@ -141,11 +152,9 @@
 
         let width = true_size.aspect_ratio*true_size.scale_max;
         let height = true_size.scale_max;
-        console.log(`Extracting paper of size w=${width} h=${height} aspect-ratio=${true_size.aspect_ratio} scale=${true_size.scale_max}`);
-        const resultCanvas = scanner.extractPaper(image,width,height,adjusted_corner_points);
-        result.height = height;
-        result.width = width;
-        resultCtx.drawImage(resultCanvas, 0, 0);
+        console.log(`Extracting paper of size w=${width} h=${height} aspect-ratio=${true_size.aspect_ratio} scale=${true_size.scale_max} at ${Date.now()}`);
+
+        extractPaper(image,width,height,adjusted_corner_points,result);
       }
 
       function determine_true_size(adjusted_corner_points){
@@ -156,13 +165,13 @@
         let x = (top+bottom)/2; // I give up
         let y = (left+right)/2;
 
-        console.log(`Raw document side lengths top=${top} bottom=${bottom} right=${right} left=${left}. Calculating original aspect ratio.`);
+        console.log(`Raw document side lengths top=${top} bottom=${bottom} right=${right} left=${left}. Calculating original aspect ratio. Time ${Date.now()}`);
 
         let x_error = Math.abs(top-bottom)/x;
         let y_error = Math.abs(left-right)/y;
 
         if (x_error>0.05 && y_error>0.05){
-          console.log("Using more advanced true size reconstructor");
+          console.log(`Using more advanced true size reconstructor at time ${Date.now()}`);
           return determine_true_size_clever(adjusted_corner_points);
         }
 
