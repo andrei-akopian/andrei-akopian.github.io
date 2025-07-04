@@ -330,13 +330,15 @@
         let mouse_pos = getMousePos(editor,event);
         if (corners.length<4){
           corners.push(mouse_pos);
-          drawCrosshair(mouse_pos);
         } else {
           corners[findClosestPointIndex(corners,mouse_pos)] = mouse_pos;
-          canvasCtx.drawImage(image,0,0);
-          for (let point of corners){
-            drawCrosshair(point);
-          }
+        };
+        canvasCtx.globalCompositeOperation = "source-over";
+        canvasCtx.drawImage(image,0,0);
+        canvasCtx.globalCompositeOperation = "difference"; // makes crosshairs inverse on all colors but gray
+        canvasCtx.strokeStyle = "#FFFFFF";
+        for (let point of corners){
+          drawCrosshair(point);
         }
       }
 
@@ -353,8 +355,12 @@
         canvasCtx.lineTo(point.x,point.y+crosshair_radius);
         canvasCtx.moveTo(point.x-crosshair_radius,point.y);
         canvasCtx.lineTo(point.x+crosshair_radius,point.y);
+        canvasCtx.stroke();
+        canvasCtx.lineWidth = 5;
+        canvasCtx.beginPath();
         canvasCtx.arc(point.x, point.y, crosshair_radius, 0, 2 * Math.PI);
         canvasCtx.stroke();
+        canvasCtx.lineWidth = 1;
       }
 
       // https://stackoverflow.com/questions/17130395/real-mouse-position-in-canvas
