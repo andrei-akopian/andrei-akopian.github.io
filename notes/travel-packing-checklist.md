@@ -1,7 +1,26 @@
 Travel Related Checklists
 =========================
+Included Checklists
+- Advance Research Checklist
+- Packing Checklist
+- Leaving House Checklist
 
 Note: notify a friend or relative of your location as you are traveling
+
+Research Location
+-----------------
+- Transportation
+  - Subway map
+  - Busses
+  - Local taxi costs
+- Download Offline map to phone
+- Check walking distances to destination from airport or station
+- Information
+  - wikivoyage.org
+  - wikipedia.org
+  - wikitravel.org
+  - reddit
+- Some Museums and Attractions need tickets bought in advance
 
 Packing List
 ------------
@@ -17,9 +36,41 @@ Packing List
     - and a bit of cash (currency conversion!)
     - Greencard
     - Drivers License
+    - for minors
+      - permissions to travel alone
+      - permissions for the adult at the destination to be the guardian
+      - written contact info of the dispatcher and reciepient
 - Clothes
+    - Standard clothes
+      - T-shirts
+      - Underwear
+      - Socks
+    - Trousers
+      - sports/home pants
+      - Shorts (not permitted in religious or hazardous places)
+      - long trousers
+      - double layer (warm) trousers
+    - Shoes
+      - Sneakers
+      - Shoes
+      - Slippers
+      - Sandals
+      - Hiking boots
+    - Top clothes
+      - jacket
+      - hoodie
+      - sweater
+      - winter jacket or coat
+      - scarf
+      - shirt
+    - Formal clothes
+      - tie
+      - shirt
     - Carry-on cloth set (in case luggage gets lost)
-    - Be careful not to pack more than necessary
+    - Swimming gear:
+      - swimsuit
+      - swim glasses
+      - towel
     - Anti-rain
       - jacket
       - plastic waterproof pants
@@ -34,6 +85,10 @@ Packing List
       - sun cream (warning, might not be allowed on flights)
     - Anti-cold
       - buff or scarf
+      - warm socks
+      - sweater
+      - anti-wind, because wind can steal heat from inside light clothes
+      - waterproof boots
 - Electronics
   - Phone
     - SIM card for destination/roaming settings
@@ -44,19 +99,26 @@ Packing List
     - Also, remember to change time
   - Adapters for everything (and converter for plug standard at destination)
 - Download map of road and destination
+- Download and print all tickets and shedules
 - Plastic bags of various sizes just in case
 - Tissues. drinks spill, toilet paper might not be there
 - Smaller bag such as a drawstring bag
 - Pen and paper
 - paperback or ebook or audiobook
-- Medical
+- Hygene
   - Dental
     - brush
     - toothpaste (warning, might not be allowed on flights)
     - toothpicks
+  - towel
+  - soap
+  - shampoo
   - bandaids
   - face mask
 - Water (empty bottle before airplanes)
+- travel pillow
+- semi-warm clothes for overly air conditioned places
+- duplicates of the above for the friend who forgets stuff
 
 NO: razors, scissors, pocket knives, and toothpaste are not allowed on airplanes
 
@@ -71,10 +133,13 @@ Leaving House
 - Fridge fully shut. Food expiration dates
 - Windows
 - Lock all doors, windows, and balconies.
+- Lower window blinds
 - Trash, especially compost
 - Clean Kitchen and Food
 - AC / Heating
+  - Lower window blinds to prevent heat in summer.
 - Pull out kettle, toaster, cleaning robot.
 - Car
 - Mail
 - Important local events during the timeframe you will be away
+- Lock front door
