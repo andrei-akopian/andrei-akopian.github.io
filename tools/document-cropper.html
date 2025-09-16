@@ -27,8 +27,10 @@
         <button id="convert-button">Convert</button><br/>
         <canvas id="result"></canvas><br/>
         <button id="download-button">Download PDF</button><br/>
+        <button id="rotate-button">↻ Rotate Clockwise</button>
         <div id="image-quality-settings">
-          Image Quality (between 0 and 1, to decrease file size): <input id="pdf-quality-input" type="number" min="0.1" step="0.05" max="1.0" value='1.0'/>
+          <div>PDF Quality (to decrease file size):</div>
+          0% <input type="range" id="pdf-quality-input" name="pdf-quality" min="0.0" max="1.0" value="1.0" step="0.05"/> 100%
         </div>
         <p id="next-steps">To merge or edit use <a href="https://www.pdftool.org/en">PDFtool</a> (online, client-side), <a href="https://www.pdfgear.com/">PDFGear</a> (application, all platforms), <a href="https://pdfsam.org/">PDFsam</a> (application, all platforms).</p>
         <p>Made using <a href="https://docs.opencv.org/">OpenCV.js</a>, and <a href="https://github.com/parallax/jsPDF">jsPDF</a>. Created in May 2025 by <a href="https://github.com/andrei-akopian">Andrei</a></p>
@@ -40,6 +42,7 @@
       const rawdocument_input = document.getElementById('rawdocument-input');
       const pdf_quality_input = document.getElementById("pdf-quality-input");
       const convert_button = document.getElementById('convert-button');
+      const rotate_button = document.getElementById("rotate-button");
       convert_button.addEventListener('click',conversion_with_cornerpoints);
       const crosshair_radius = 40;
       let image = new Image();
@@ -59,6 +62,8 @@
 
       let resultCtx = result.getContext("2d");
       const canvasCtx = editor.getContext("2d", { willReadFrequently: true });
+
+      let rotation = 0;
 
       function clearCanvas() {
         canvasCtx.clearRect(0, 0, editor.width, editor.height);
@@ -102,9 +107,10 @@
       }
       editor.addEventListener("mousedown",process_mouse_press)
 
-      function extractPaper(image,width,height,adjusted_corner_points,result_canvas){
+      function extractPaper(image,width,height,adjusted_corner_points){
         // console.log(`Starting extraction at ${Date.now()}`);
         let src = cv.imread(image);
+        let temp_output_canvas = document.createElement('canvas');
         let dst = new cv.Mat();
         let dsize = new cv.Size(width, height);
         let srcTri = cv.matFromArray(4, 1, cv.CV_32FC2, [
@@ -119,8 +125,22 @@
         cv.warpPerspective(src, dst, M, dsize, cv.INTER_LINEAR, cv.BORDER_CONSTANT, new cv.Scalar());
 
         // console.log(`Finished extraction at ${Date.now()}`);
-        cv.imshow(result_canvas, dst);
+        cv.imshow(temp_output_canvas, dst);
         src.delete(); dst.delete(); M.delete(); srcTri.delete(); dstTri.delete();
+        return temp_output_canvas;
+      }
+
+      rotate_button.addEventListener("click",rotate_button_processor);
+
+      function rotate_button_processor() {
+        rotation = (rotation + 1)%4;
+        rotate_canvas();
+      }
+      function rotate_canvas() {
+        resultCtx.save();
+        resultCtx.rotate(rotation * Math.PI / 2);
+        conversion_with_cornerpoints();
+        resultCtx.restore();
       }
 
       function adjust_corner_points(corners){
@@ -159,7 +179,10 @@
         let height = true_size.scale_max;
         console.log(`Extracting paper of size w=${width} h=${height} aspect-ratio=${true_size.aspect_ratio} scale=${true_size.scale_max} at ${Date.now()}`);
 
-        extractPaper(image,width,height,adjusted_corner_points,result);
+        let temp_output_canvas = extractPaper(image,width,height,adjusted_corner_points,result);
+        result.height = height;
+        result.width = width;
+        resultCtx.drawImage(temp_output_canvas,0,0,width,height);
       }
 
       function determine_true_size(adjusted_corner_points){
@@ -333,6 +356,10 @@
         } else {
           corners[findClosestPointIndex(corners,mouse_pos)] = mouse_pos;
         };
+        drawEditCanvas();
+      }
+
+      function drawEditCanvas() {
         canvasCtx.globalCompositeOperation = "source-over";
         canvasCtx.drawImage(image,0,0);
         canvasCtx.globalCompositeOperation = "difference"; // makes crosshairs inverse on all colors but gray
@@ -376,7 +403,7 @@
 
       // https://stackoverflow.com/questions/23681325/convert-canvas-to-pdf
       print_pdf =  function() {
-        let imgData = result.toDataURL("image/jpeg", pdf_quality_input.value); // mime-type, quality 0.0-1.0
+        let imgData = result.toDataURL("image/jpeg", parseFloat(pdf_quality_input.value)); // mime-type, quality 0.0-1.0
         let pdf;
         let width = result.width;
         let height = result.height;
@@ -425,7 +452,8 @@
           font-size: 1em;
         }
         #image-quality-settings {
-          font-size: 1.2em;
+          margin-top: 0.2rem;
+          font-size: 1.2rem;
         }
         #file-drop-zone {
           border: 5px dashed gray;
