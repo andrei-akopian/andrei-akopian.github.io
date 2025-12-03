@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>Background Tester</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <meta name="description" content="Description Goes Here" />
+        <link rel="stylesheet" type="text/css" href="./earth/earth.css" />
+        <script src="./earth/earth.js"></script>
+    </head>
+    <body>
+        <h1>Background</h1>
+        <div class="background-wrapper">
+            <link rel="stylesheet" type="text/css" href="./earth/earth.css" />
+            <div class="earth">
+                <!-- Eurasia -->
+                <div style="--latitude: 0.50" class="continent-wrapper eurasia">
+                    <div class="continent"></div>
+                </div>
+                <div style="--latitude: 0.0" class="continent-wrapper india">
+                    <div class="continent"></div>
+                </div>
+                <!-- Oceania -->
+                <div style="--latitude: 0" class="continent-wrapper islands">
+                    <div class="continent"></div>
+                </div>
+                <div style="--latitude: -0.60" class="continent-wrapper australia">
+                    <div class="continent"></div>
+                </div>
+                <!-- Americas -->
+                <div style="--latitude: 0.50" class="north-america continent-wrapper">
+                    <div class="continent"></div>
+                </div>
+                <div style="--latitude: -0.50" class="south-america continent-wrapper">
+                    <div class="continent"></div>
+                </div>
+                <!-- Africa -->
+                <div style="--latitude: -0.50" class="africa continent-wrapper">
+                    <div class="continent"></div>
+                </div>
+            </div>
+            <div class="moon">
+            </div>
+        </div>
+        <button onclick="triggerBackground()">Background</button>
+    </body>
+</html>

@@ -1,0 +1,176 @@
+.background-wrapper {
+    background-color: #111;
+    aspect-ratio: 1;
+    height: 100%;
+    min-width: 70%;
+    max-width: 100vh;
+    max-height: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    z-index: -20;
+    overflow: hidden;
+    top: 0%;
+    right: 0%;
+}
+
+.stars {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 1em;
+}
+
+.earth {
+    background-color: steelblue;
+    border-radius: 50%;
+    aspect-ratio: 1;
+    min-width: 20em;
+    max-width: 50%;
+    max-height: 50%;
+    position: relative;
+    filter: blur(2em);
+    z-index: 0.5;
+}
+
+.moon {
+    background-color: lightslategray;
+    animation: 23.12s linear 0s infinite forwards running orbit;
+    border-radius: 50%;
+    aspect-ratio: 1;
+    width: 12%;
+    left: 0%;
+    filter: blur(0.5em);
+    position: absolute;
+}
+
+.continent-wrapper {
+    --longitude: 0rad;
+    --latitude-cosine: calc((1 - var(--latitude) * var(--latitude) / 2.5));
+    width: 0px;
+    height: 0px;
+    display: block;
+    position: absolute;
+    left: 0%;
+    top: calc((1 - sin(var(--latitude) * 1rad)) * 50%);
+    transform: rotateX(calc(var(--latitude) * 1rad * (-1)));
+    opacity: 0;
+}
+
+.continent {
+    display: inherit;
+    background-color: inherit;
+    width: 10em;
+    height: 10em;
+    transform-origin: center center;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+}
+
+@keyframes spin {
+  0% {
+    left: calc(50% - (1 - var(--latitude) * var(--latitude) / 2.5) * 50%);
+    transform: rotateY(-1.57rad);
+    rotate: calc(var(--latitude) * 1rad);
+    opacity: 1;
+  }
+  50% {
+    left: calc(50% + (1 - var(--latitude) * var(--latitude) / 2.5) * 50%);
+    transform: rotateY(1.57rad);
+    rotate: calc(var(--latitude) * 1rad * (-1));
+    opacity: 1;
+  }
+  51% {
+    opacity: 0;
+  }
+  100%{
+    --color: green;
+    opacity: 0;
+  }
+}
+
+@keyframes orbit {
+    0% {
+        left: 0%;
+        width: 12%;
+        z-index: 1;
+        animation-timing-function: ease-in;
+    }
+    25% {
+        left: 50%;
+        width: 16%;
+        animation-timing-function: ease-out;
+    }
+    50% {
+        left: 90%;
+        width: 12%;
+        z-index: -1;
+        animation-timing-function: ease-in;
+    }
+    75% {
+        left: 50%;
+        width: 8%;
+        z-index: -1;
+        animation-timing-function: ease-out;
+    }
+    100% {
+        left: 0%;
+        width: 12%;
+        z-index: -1;
+    }
+}
+
+.eurasia {
+    animation: 10s ease-in-out 6s infinite forwards running spin;
+    background-color: green;
+}
+.eurasia .continent {
+    width: 20em;
+}
+
+.india {
+    animation: 10s ease-in-out 5.5s infinite forwards running spin;
+    background-color: green;
+}
+.india .continent {
+    height: 5em;
+}
+
+.islands {
+    animation: 10s ease-in-out 4s infinite forwards running spin;
+    background-color: none;
+}
+.islands .continent {
+    width: 10em;
+    height: 10em;
+    border: 2em dashed green;
+}
+
+.australia {
+    animation: 10s ease-in-out 5s infinite forwards running spin;
+    background-color: orangered;
+}
+.australia .continent {
+    width: 7em;
+    height: 7em;
+}
+
+.north-america {
+    animation: 10s ease-in-out 0s infinite forwards running spin;
+    background-color: green;
+}
+
+.south-america {
+    animation: 10s ease-in-out 0s infinite forwards running spin;
+    background-color: green;
+}
+
+.africa {
+    animation: 10s ease-in-out 7s infinite forwards running spin;
+    background-color: yellow;
+}
+
+.aura {
+
+}
