@@ -229,9 +229,6 @@ a:visited {
 }
 
 /* https://github.com/cadars/john-doe */
-section#tmptsch {
-  display: flex;
-}
 
 section {
     width: 100%;
@@ -247,9 +244,48 @@ section {
     font-family: Courier;
 }
 
-.coursel-button {
-    width: 3em;
-    margin: 1em;
+.project-roller .coursel-entry {
+    box-sizing: border-box;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 1em;
+}
+
+.project-roller .coursel-entry .icon {
+    aspect-ratio: 1;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.project-roller .coursel-entry div {
+    text-align: center;
+}
+
+.project-roller .coursel-entry .coursel-entry-description {
+    max-height: 100%;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: center;
+}
+
+.coursel-controls {
+    width: fit-content;
+    text-align: center;
+    writing-mode: vertical-lr;
+    height: 100%;
+    display: inline;
+    border-color: blue;
+    border-style: solid;
+    border-width: 0 0.2em 0 0.2em;
+}
+
+.coursel-controls a {
+    text-decoration: none;
+    color: blue;
 }
 
 section .machine-div {
