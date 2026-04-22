@@ -24,6 +24,7 @@
     mask-image:
         linear-gradient(89deg, transparent 20%, black 21%, transparent 22%, transparent 60%, black 61%, transparent 62%),
         linear-gradient(130deg, transparent 20%, black 21%, transparent 22%, transparent 60%, black 61%, transparent 62%);
+        z-index: -21;
 }
 
 .stars {

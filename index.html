@@ -6,15 +6,37 @@
     </head>
     <body>
         <div id="main-grid">
-            <div class="machine-div" id="page-title"><h1>Andrei's<br/>Site</h1></div>
-            <div class="machine-div" id="simplify-link"><a href="./simple.html" class='simplify-link-button'>Simplify</a></div>
+            <div class="machine-div" id="page-title">
+                <h1>Andrei's<br/>Site</h1>
+            </div>
+            <div class="machine-div" id="simplify-link">
+                <a href="./simple.html" class='simplify-link-button'>Simplify</a>
+            </div>
             <div class="split-container">
                 <div class="slant" id="row-1-slant"></div>
                 <div class="shelf-div slant-shelf"></div>
             </div>
             <div class="shelf-div">
-                <a class="emoji-icon" href="https://andrei-akopian.bearblog.dev/blog/">📜</a>
-                <div class="shelf-wood"><a href="https://andrei-akopian.bearblog.dev/blog/">Blog</a></div>
+                <div class="switok">
+                    <div class="switok-bar">
+                        <div class="switok-bar-handle"></div>
+                        <div class="switok-bar-roll"></div>
+                    </div>
+                    <div class="switok-content">
+                        <!--<a href="https://andrei-akopian.bearblog.dev/a-story-about-a-knight-and-a-princess-and-apples/">
+                            A Story about Knight, Princess, and Apples.
+                        </a>
+                        <p>I don't actually have that much. Enjoy the feeling of "will it ever stop."</p>-->
+                        <a class="fill-link" href="https://andrei-akopian.bearblog.dev/blog/"></a>
+                    </div>
+                    <div class="switok-bar">
+                        <div class="switok-bar-handle"></div>
+                        <div class="switok-bar-roll"></div>
+                    </div>
+                </div>
+                <div class="shelf-wood">
+                    <a href="https://andrei-akopian.bearblog.dev/blog/">Blog</a>
+                </div>
             </div>
             <div class="shelf-div">
                 <a id="github-cat-wrapper" href="https://github.com/andrei-akopian">
@@ -44,7 +66,8 @@
                 </div>
             </div>
             <div class="shelf-div">
-                <div class="shelf-wood"></div>
+                <div class="shelf-wood">
+                </div>
             </div>
             <div class="shelf-div">
                 <div class="vertical-book-wrapper">
@@ -83,17 +106,16 @@
 
 
             <div class="project-roller">
-                <!-- Project roller consists of sections addressible via #id in url -->
-                <section id="tmptsch">
+                <section id="tmptsch" class="first-coursel-entry">
                     <div class="coursel-controls">
                         <a href="#proofreading-tool"><==</a>
                         <a href="#code-printer">==></a>
                     </div>
                     <div class="coursel-entry">
-                        <div class="icon">
+                        <div class="coursel-entry-banner">
                             <a href="https://andrei-akopian.github.io/TMPTSCH/">
                                 <img src="https://andrei-akopian.github.io//TMPTSCH/favicon.svg">
-                                <span>TMPTSCH</span>
+                                <div>TMPTSCH</div>
                             </a>
                         </div>
                         <div class="coursel-entry-description">
@@ -106,14 +128,14 @@
                 </section>
                 <section id="code-printer">
                     <div class="coursel-controls">
-                        <a href="#code-printer"><==</a>
+                        <a href="#tmptsch"><==</a>
                         <a href="#document-cropper">==></a>
                     </div>
                     <div class="coursel-entry">
-                        <div class="icon">
+                        <div class="coursel-entry-banner">
                             <a href="https://andrei-akopian.github.io/CodePrintFormatter/">
-                                <img src="./assets/code-printer.svg">
-                                <span>Code Printer</span>
+                                <img src="./assets/code-printer.svg"/>
+                                <div>Code Printer</div>
                             </a>
                         </div>
                         <div class="coursel-entry-description">
@@ -129,7 +151,7 @@
                         <a href="#proofreading-tool">==></a>
                     </div>
                     <div class="coursel-entry">
-                        <div class="icon">
+                        <div class="coursel-entry-banner">
                             <a href="./tools/document-cropper.html">
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
                                     <polygon points="25,10 75,10 90,90 10,90" style="fill:lightgray;stroke:gold;stroke-width:3" />
@@ -150,9 +172,9 @@
                         <div class="coursel-entry-description">
                         <p>Simple <a href="./tools/proofreading-tool.html">Proofreading Tool</a> to change point-of-view and find mistakes.</p>
                         </div>
-                        <div clas="icon">
+                        <div clas="coursel-entry-banner">
                         <a href="./tools/proofreading-tool.html">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="200" height="100">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
                                 <text y="87" font-size="100">📄</text>
                                 <text y="90" x="10" font-size="50">🔎</text>
                             </svg>

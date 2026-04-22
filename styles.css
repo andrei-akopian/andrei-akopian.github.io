@@ -22,7 +22,15 @@ a:visited {
 
 #page-title {
     grid-area: 1 / 1 / 1 / 1;
+    padding: 1rem;
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#page-title h1 {
+    font-size: 1em;
 }
 
 #simplify-link {
@@ -37,14 +45,12 @@ a:visited {
 }
 
 .simplify-link-button {
+    background-color: lightblue;
     color: #0000EE;
     text-decoration-line: none;
-}
-
-.simplify-link-button {
-    background-color: lightblue;
     border: dashed black;
     padding: 0.5rem;
+    font-size: 0.6em;
 }
 
 .shelf-div {
@@ -71,15 +77,18 @@ a:visited {
     align-items: center;
     flex-direction: column;
     font-family: Courier;
+    font-size: 2.5cqw;
+    container-type: inline-size;
 }
 
-.project-roller {
-    grid-area: 5 / 1 / 6 / 3;
-    --roller-color: #6495ED;
-    /*--roller-color: var(--machine-color);*/
-    background: var(--roller-color);
-    position: relative;
+@container (width < 120px) {
+    h1, .simplify-link-button {
+        writing-mode: vertical-lr;
+        text-orientation: upright;
+        line-height: 1;
+    }
 }
+
 
 .machine-label {
     height: 1.5rem;
@@ -229,7 +238,86 @@ a:visited {
     }
 }
 
+/* Blog Switok*/
+
+.switok {
+    height: 5em;
+    max-width: 7em;
+    width: 70%;
+    z-index: 1;
+}
+
+.switok-bar {
+    height: 1rem;
+    position: relative;
+}
+
+.switok-content {
+    width: calc(100% - 1rem);
+    margin: 0% 0.5rem;
+    height: calc(100% - 2rem);
+    background-color: white;
+    font-size: 0.7em;
+    overflow: hidden;
+}
+
+.switok-content a {
+    color: black;
+    text-decoration: none;
+    font-family: cursive;
+}
+
+.switok-content .fill-link {
+    height: 100%;
+    width: 100%;
+    display: inline-block;
+}
+
+.switok-content:hover {
+    animation-name: switok-unroll;
+    animation-duration: 20s;
+    animation-timing-function: linear;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes switok-unroll {
+    0% {
+        height: calc(100% - 2rem);
+    }
+    100% {
+        height: 100vh;
+    }
+}
+
+.switok-bar .switok-bar-handle {
+    height: 50%;
+    width: 100%;
+    position: absolute;
+    top: 25%;
+    background-color: saddlebrown;
+}
+
+.switok-bar .switok-bar-roll {
+    height: 100%;
+    position: absolute;
+    width: calc(100% - 1rem);
+    left: 0.5rem;
+    background-color: darkgray;
+}
+
 /* https://github.com/cadars/john-doe */
+.project-roller {
+    grid-area: 5 / 1 / 6 / 3;
+    --roller-color: #6495ED;
+    /*--roller-color: var(--machine-color);*/
+    background: var(--roller-color);
+    position: relative;
+}
+
+section.first-coursel-entry {
+    display: flex;
+}
 
 section {
     width: 100%;
@@ -238,7 +326,7 @@ section {
     position: absolute;
     top: 0;
     background-color: var(--roller-color);
-
+    /*background-image: linear-gradient(0deg, var(--roller-color) 20%, white 50%, var(--roller-color) 80%);*/
     justify-content: space-between;
     align-items: center;
     flex-direction: row;
@@ -295,11 +383,6 @@ section {
 .coursel-controls a {
     text-decoration: none;
     color: blue;
-}
-
-section .machine-div {
-    max-width: 50%;
-    background-color: var(--roller-color);
 }
 
 section:target {
