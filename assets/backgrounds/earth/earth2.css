@@ -1,10 +1,9 @@
 .background-wrapper {
     background-color: #111;
-    aspect-ratio: 1;
     height: 100%;
     min-width: 70%;
-    max-width: 100vh;
-    max-height: 100vw;
+    max-width: 100vw;
+    max-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -24,7 +23,7 @@
     mask-image:
         linear-gradient(89deg, transparent 20%, black 21%, transparent 22%, transparent 60%, black 61%, transparent 62%),
         linear-gradient(130deg, transparent 20%, black 21%, transparent 22%, transparent 60%, black 61%, transparent 62%);
-        z-index: -21;
+        z-index: -22;
 }
 
 .stars {
@@ -45,7 +44,7 @@
     max-height: 50%;
     position: relative;
     filter: blur(0.2em);
-    z-index: 0.5;
+    z-index: -20;
     mask-image: radial-gradient(circle at 50% 50%, black 70%, transparent 50%);
 }
 
@@ -232,7 +231,7 @@
     0% {
         left: 0%;
         width: 12%;
-        z-index: 1;
+        z-index: -19;
         animation-timing-function: ease-in;
     }
     25% {
@@ -243,18 +242,18 @@
     50% {
         left: 90%;
         width: 12%;
-        z-index: -1;
+        z-index: -21;
         animation-timing-function: ease-in;
     }
     75% {
         left: 50%;
         width: 8%;
-        z-index: -1;
+        z-index: -21;
         animation-timing-function: ease-out;
     }
     100% {
         left: 0%;
         width: 12%;
-        z-index: -1;
+        z-index: -21;
     }
 }
