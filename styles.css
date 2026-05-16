@@ -7,7 +7,6 @@ body {
     margin: 0;
     height: 100vh;
     --machine-color: steelblue;
-    /*--shelf-wood-height: 1.5rem;*/
     --shelf-wood-height: 15%;
 }
 
@@ -27,22 +26,17 @@ a:visited {
 }
 
 #page-title {
-    grid-area: 1 / 1 / 1 / 1;
-    padding: 1rem;
     text-align: center;
+    position: relative;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start;
     align-items: center;
+    grid-column: span 2;
 }
 
 #page-title h1 {
     font-size: 1.5rem;
-}
-
-#simplify-link {
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 .simplify-link-button:visited {
@@ -57,6 +51,7 @@ a:visited {
     border: dashed black;
     padding: 0.5rem;
     font-size: 0.6em;
+    width: 90%;
 }
 
 .shelf-div {
@@ -267,6 +262,10 @@ a:visited {
     20% { transform: rotate(0deg); }
 }
 
+.mobile {
+    display: none;
+}
+
 /* Blog Switok*/
 
 .switok {
@@ -345,6 +344,11 @@ a:visited {
     position: relative;
 }
 
+.project-roller-placeholder {
+    display: none;
+    grid-column: span 2;
+}
+
 section.first-coursel-entry {
     display: flex;
 }
@@ -417,4 +421,22 @@ section {
 
 section:target {
   display: flex;
+}
+
+@media (max-width: 600px) {
+    .shelf-wood {
+        font-size: 1.3em;
+    }
+    .project-roller {
+        display: none;
+    }
+    .project-roller-placeholder {
+        display: flex;
+    }
+    .mobile {
+        display: block;
+    }
+    .desktop {
+        display: none;
+    }
 }
