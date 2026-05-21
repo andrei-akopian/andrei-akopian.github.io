@@ -54,6 +54,10 @@ a:visited {
     width: 90%;
 }
 
+noscript {
+    font-size: 1rem;
+}
+
 .shelf-div {
     height: 100%;
     display: flex;
@@ -439,4 +443,18 @@ section:target {
     .desktop {
         display: none;
     }
+}
+
+@media (prefers-color-scheme: light) {
+  .day-background {}
+  .night-background {
+    display: none !important;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .day-background {
+    display: none !important;
+  }
+  .night-background {}
 }
