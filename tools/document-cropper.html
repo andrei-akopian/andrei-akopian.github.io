@@ -57,17 +57,8 @@
       let corners = [];
       let selected_corner = 0;
 
-      const editor = document.getElementById("editor");
-      const result = document.getElementById("result");
-
-      let resultCtx = result.getContext("2d");
-      const canvasCtx = editor.getContext("2d", { willReadFrequently: true });
-
-      let rotation = 0;
-
-      function clearCanvas() {
-        canvasCtx.clearRect(0, 0, editor.width, editor.height);
-      }
+      const editor = new Canvas(document.getElementById("editor"));
+      const result = new Canvas(document.getElementById("result"));
 
       //file uploads
       filedropzone.addEventListener('drop',dropHandler);
@@ -97,11 +88,10 @@
       function processLoadedFile(e){
         image = new Image();
         image.onload = function() {
-          editor.width = image.width;
-          editor.height = image.height;
-          clearCanvas();
+          editor.clearCanvas();
+          result.clearCanvas();
           corners = [];
-          canvasCtx.drawImage(image, 0, 0);
+          this.canvas_element.drawImage(image, 0, 0);
         };
         image.src = e.target.result;
       }
@@ -134,13 +124,30 @@
 
       function rotate_button_processor() {
         rotation = (rotation + 1)%4;
-        rotate_canvas();
+        let temp_image = new Image();
+        temp_image.src = result.toDataURL("image/jpeg", 1.0);
+        console.log(temp_image);
+        result.width = result.width;
+        // setResultCanvasSize(result.width,result.height);
+        // rotateCanvas(result.width,result.height);
+        resultCtx.drawImage(temp_image,0,0);
       }
-      function rotate_canvas() {
+      function setResultCanvasSize(width,height){
+        if (rotation%2==1){
+          result.height = width;
+          result.width = height;
+        } else {
+          result.height = height;
+          result.width = width;
+        }
+      }
+      function rotateCanvas(width,height) {
+        // let image_data = resultCtx.getImageData(0,0,result.width,result.height);
         resultCtx.save();
-        resultCtx.rotate(rotation * Math.PI / 2);
-        conversion_with_cornerpoints();
-        resultCtx.restore();
+        for (let i=0; i<rotation;i++){
+            resultCtx.rotate(Math.PI/2);
+            resultCtx.translate(0,-height);
+        }
       }
 
       function adjust_corner_points(corners){
@@ -164,13 +171,13 @@
         }
         // console.log("Adjusted corner points: ",adjusted_corner_points);
         let true_size = determine_true_size(adjusted_corner_points);
-        
+
         // account for preset sizes
-        let selected_size = size_selector.value;
+        let selected_size = size_selector.value; // dropdown
         if (selected_size != "estimated"){
-          if (true_size.aspect_ratio > 1){
+          if (true_size.aspect_ratio > 1){ // landscape
             true_size.aspect_ratio = sizes[selected_size];
-          } else {
+          } else { // vertical
             true_size.aspect_ratio = 1/sizes[selected_size];
           }
         }
@@ -180,9 +187,7 @@
         console.log(`Extracting paper of size w=${width} h=${height} aspect-ratio=${true_size.aspect_ratio} scale=${true_size.scale_max} at ${Date.now()}`);
 
         let temp_output_canvas = extractPaper(image,width,height,adjusted_corner_points,result);
-        result.height = height;
-        result.width = width;
-        resultCtx.drawImage(temp_output_canvas,0,0,width,height);
+        result.pushImage(temp_output_canvas,0,0);
       }
 
       function determine_true_size(adjusted_corner_points){
@@ -253,7 +258,7 @@
           let right_eq = linear_eqution(adjusted_corner_points.topRightCorner,adjusted_corner_points.bottomRightCorner);
           let horizon_horizontal_point = solve_linear_equations(top_eq,bottom_eq);
           let horizon_vertical_point = solve_linear_equations(right_eq,left_eq);
-          console.log(horizon_horizontal_point, horizon_vertical_point);
+          // console.log(horizon_horizontal_point, horizon_vertical_point);
           let horizon_eq = linear_eqution(horizon_horizontal_point,horizon_vertical_point);
           let horizon_length = calculate_distance(horizon_horizontal_point,horizon_vertical_point);
           let shift_distance = horizon_length/2/Math.cos(Math.atan(horizon_eq.slope));
@@ -356,38 +361,91 @@
         } else {
           corners[findClosestPointIndex(corners,mouse_pos)] = mouse_pos;
         };
-        drawEditCanvas();
+        editor.drawEditCanvas();
       }
 
-      function drawEditCanvas() {
-        canvasCtx.globalCompositeOperation = "source-over";
-        canvasCtx.drawImage(image,0,0);
-        canvasCtx.globalCompositeOperation = "difference"; // makes crosshairs inverse on all colors but gray
-        canvasCtx.strokeStyle = "#FFFFFF";
-        for (let point of corners){
-          drawCrosshair(point);
+      class Canvas {
+        constructor(canvas_element="No-Canvas-Element") {
+          this.canvas_element;
+          this.w;
+          this.h;
+          this.ctx;
+          this.rotation;
+          this.raw_image;
+          this.current_image;
+          if (canvas_element=="No-Canvas-Element"){ // none
+            throw new Error("Canvas constructor: No Canvas Element provided");
+          } else if (typeof canvas_element == HTMLCanvasElement) {
+            this.canvas_element = canvas_element
+          } else if (canvas_element==null){
+            throw new Error("Canvas constructor: Canvas Element Undefined");
+          } else if (typeof canvas_element == "string") {// id
+            this.canvas_element = document.getElementById(canvas_element);
+          }
+          this.ctx = this.canvas_element.getContext("2d");
+          this.w = this.canvas_element.width;
+          this.h = this.canvas_element.height;
         }
-      }
-
-      function drawLine(eq){
-        canvasCtx.beginPath();
-        canvasCtx.moveTo(0,eq.y_intercept);
-        canvasCtx.lineTo(editor.width,eq.slope*editor.width+eq.y_intercept);
-        canvasCtx.stroke();
-      }
-
-      function drawCrosshair(point){
-        canvasCtx.beginPath();
-        canvasCtx.moveTo(point.x,point.y-crosshair_radius);
-        canvasCtx.lineTo(point.x,point.y+crosshair_radius);
-        canvasCtx.moveTo(point.x-crosshair_radius,point.y);
-        canvasCtx.lineTo(point.x+crosshair_radius,point.y);
-        canvasCtx.stroke();
-        canvasCtx.lineWidth = 5;
-        canvasCtx.beginPath();
-        canvasCtx.arc(point.x, point.y, crosshair_radius, 0, 2 * Math.PI);
-        canvasCtx.stroke();
-        canvasCtx.lineWidth = 1;
+        get width(){
+          return this.w;
+        }
+        set width(width){
+          this.w = width;
+          this.canvas_element.width = this.w;
+        }
+        get height(){
+          return this.h;
+        }
+        set height(height){
+          this.h = height;
+          this.canvas_element.h = this.h;
+        }
+        clearCanvas() {
+          this.ctx.clearRect(0, 0, this.w, this.h);
+        }
+        pushRawImage(image){ // needs to be rotated
+          this.raw_image = image;
+          this.current_image = image;
+          this.rotation = 0;
+        }
+        pushImage(image){ // does not need to be rotated
+          this.raw_image = image;
+          this.current_image = image;
+        }
+        drawEditCanvas() {
+          this.ctx.globalCompositeOperation = "source-over";
+          this.ctx.drawImage(image,0,0);
+          this.ctx.globalCompositeOperation = "difference"; // makes crosshairs inverse on all colors but gray
+          this.ctx.strokeStyle = "#FFFFFF";
+          for (let point of corners){
+            drawCrosshair(point);
+          }
+        }
+        drawLine(eq){
+          this.ctx.beginPath();
+          this.ctx.moveTo(0,eq.y_intercept);
+          this.ctx.lineTo(editor.width,eq.slope*editor.width+eq.y_intercept);
+          this.ctx.stroke();
+        }
+        drawCrosshair(point){
+          this.ctx.beginPath();
+          this.ctx.moveTo(point.x,point.y-crosshair_radius);
+          this.ctx.lineTo(point.x,point.y+crosshair_radius);
+          this.ctx.moveTo(point.x-crosshair_radius,point.y);
+          this.ctx.lineTo(point.x+crosshair_radius,point.y);
+          this.ctx.stroke();
+          this.ctx.lineWidth = 5;
+          this.ctx.beginPath();
+          this.ctx.arc(point.x, point.y, crosshair_radius, 0, 2 * Math.PI);
+          this.ctx.stroke();
+          this.ctx.lineWidth = 1;
+        }
+        dimensionsFitImage(image){
+          // make dimensions of canvas fit the image
+          // works with ImageData, Image, and HTMLCanvasElement
+          this.width(image.width);
+          this.height(image.height);
+        }
       }
 
       // https://stackoverflow.com/questions/17130395/real-mouse-position-in-canvas

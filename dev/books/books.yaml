@@ -1,7 +1,7 @@
 # Structure
 # - title: Book Title
 #   subheading: Subheading of the book
-#   hotlink: 
+#   hotlink:
 #   author: John Doe
 #   description: An Example Book
 #   links:
@@ -19,7 +19,7 @@
   hotlink: https://hpmor.com/
   author: Eliezer S. Yudkowsky
   description: if fantasy characters were actually smart
-  links: 
+  links:
     Wikipedia: https://en.wikipedia.org/wiki/Harry_Potter_and_the_Methods_of_Rationality
     LessWrong: https://www.lesswrong.com/hpmor
     Goodreads: https://www.goodreads.com/book/show/10016013-harry-potter-and-the-methods-of-rationality
@@ -29,7 +29,7 @@
   hotlink: https://en.wikipedia.org/wiki/The_13%C2%BD_Lives_of_Captain_Bluebear
   author: Walter Moers
   description: good imagination for once
-  links: 
+  links:
     Wikipedia: https://en.wikipedia.org/wiki/The_13%C2%BD_Lives_of_Captain_Bluebear
     Goodreads: https://www.goodreads.com/book/show/62032.The_13_Lives_of_Captain_Bluebear
     GoogleBooks: https://www.google.com/books/edition/The_13_5_Lives_Of_Captain_Bluebear/W0fxmdVXoAIC
@@ -38,7 +38,7 @@
   hotlink: https://en.wikipedia.org/wiki/The_Goal_(novel)
   author: Eliyahu M. Goldratt
   description: stories are a really underrated way to teach
-  links: 
+  links:
     Wikipedia: https://en.wikipedia.org/wiki/The_Goal_(novel)
     GoogleBooks: https://www.google.com/books/edition/The_Goal/HyxLDQAAQBAJ
     LibraryThing: https://www.librarything.com/work/774
@@ -95,7 +95,9 @@
   links:
     Wikipedia: https://en.wikipedia.org/wiki/The_Royal_Game
     GoogleBooks: https://www.google.com/books/edition/The_Royal_Game/LRyFAAAAQBAJ
+
 ---
+
 - title: The Count of Monte Cristo
   subheading: a well executed revenge
   hotlink: https://en.wikipedia.org/wiki/The_Count_of_Monte_Cristo
@@ -120,3 +122,27 @@
   links:
     Wikipedia: https://en.wikipedia.org/wiki/Momo_(novel)
     Goodreads: https://www.goodreads.com/book/show/1408839
+- title: Calculus Made Easy
+  subheading: What one fool can do, another can.
+  author: Silvanus P. Thompson
+  hotlink: https://calculusmadeeasy.org/
+  description: beats 21st century textbooks
+  links:
+    ProjectGutenberg: https://www.gutenberg.org/ebooks/33283
+    Wikipedia: https://en.wikipedia.org/wiki/Calculus_Made_Easy
+    GoogleBooks: https://www.google.com/books/edition/Calculus_Made_Easy/Cj-uAgAAQBAJ
+- title: Catch-22
+  subheading: satirical war novel
+  author: Joseph Heller
+  hotlink: https://en.wikipedia.org/wiki/Catch-22
+  description: everyone is crazy
+  links:
+    Wikipedia: https://en.wikipedia.org/wiki/Catch-22
+    Goodreads: https://www.goodreads.com/book/show/168668.Catch_22
+- title: Cryptonomicon
+  subheading: histocial fiction
+  author:	Neal Stephenson
+  hotlink: https://en.wikipedia.org/wiki/Cryptonomicon
+  description: a decent wrapper on a bunch of mundane computer facts
+  links:
+    Wikipedia: https://en.wikipedia.org/wiki/Cryptonomicon
