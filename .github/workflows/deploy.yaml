@@ -13,11 +13,13 @@ jobs:
   build:
     runs-on: ubuntu-slim
     steps:
-      - run: rm -rf .git .github
+      - run: mkdir ./public
+      - run: cp -r ./* public/ 2>/dev/null || true
+      - run: rm -rf ./public/.git ./public/.github
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: ./public
 
   deploy:
     runs-on: ubuntu-slim
