@@ -13,9 +13,14 @@ jobs:
   build:
     runs-on: ubuntu-slim
     steps:
+      - uses: actions/checkout@v4
       - run: mkdir ./public
       - run: cp -r ./* public/ 2>/dev/null || true
       - run: rm -rf ./public/.git ./public/.github
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
       - run: ls .
 
   deploy:
@@ -25,10 +30,5 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/checkout@v4
       - run: ls .
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: ./public
       - uses: actions/deploy-pages@v4
