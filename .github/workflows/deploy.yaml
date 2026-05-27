@@ -14,14 +14,12 @@ jobs:
     runs-on: ubuntu-slim
     steps:
       - uses: actions/checkout@v4
-      - run: mkdir ./public
-      - run: cp -r ./* public/ 2>/dev/null || true
-      - run: rm -rf ./public/.git ./public/.github
+      - name: Build the static site
+        run: make
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./public
-      - run: ls .
 
   deploy:
     needs: build
@@ -30,5 +28,4 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - run: ls .
       - uses: actions/deploy-pages@v4
