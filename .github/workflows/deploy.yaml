@@ -16,6 +16,7 @@ jobs:
       - run: mkdir ./public
       - run: cp -r ./* public/ 2>/dev/null || true
       - run: rm -rf ./public/.git ./public/.github
+      - run: ls .
 
   deploy:
     needs: build
@@ -25,6 +26,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      - run: ls .
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
