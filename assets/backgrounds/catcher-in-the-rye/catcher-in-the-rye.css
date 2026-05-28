@@ -1,21 +1,9 @@
 .background-wrapper.day-background {
     background-color: #87cefa;
-    height: 100%;
-    min-width: 70%;
-    max-width: 100vw;
-    max-height: 100vh;
-    display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: absolute;
-    z-index: -20;
-    overflow: hidden;
-    top: 0%;
-    right: 0%;
 }
 
-.scene {    
+.scene {
     width: 100%;
     height: 60%;
     display: flex;
@@ -91,7 +79,7 @@
 .holden {
     position: absolute;
     top: -2rem;
-    animation: 20s linear 0s infinite forwards holden-walk, 
+    animation: 20s linear 0s infinite forwards holden-walk,
         0.5s ease-in-out 0s infinite alternate walking-wobble;
 }
 
@@ -107,7 +95,7 @@
     position: absolute;
     height: 0.5em;
     width: 1em;
-    right: -1rem;    
+    right: -1rem;
     top: 0.5em;
     background-color: rgb(201, 41, 41);
 }
@@ -147,12 +135,12 @@
 
 .child1 {
     background-image: repeating-linear-gradient(
-        45deg, 
-        white 0%, white 2px, 
+        45deg,
+        white 0%, white 2px,
         transparent 2px, transparent 6px
     ), repeating-linear-gradient(
-        -45deg, 
-        white 0%, white 2px, 
+        -45deg,
+        white 0%, white 2px,
         transparent 2px, transparent 6px
     );
     width: 3rem;
@@ -176,7 +164,7 @@
 }
 
 .child3 {
-    
+
 }
 
 .cliff {
