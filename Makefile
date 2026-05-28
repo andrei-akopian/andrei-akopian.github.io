@@ -2,6 +2,10 @@ BUILD_DIR = public
 
 .PHONY: all
 all: $(BUILD_DIR) $(BUILD_DIR)/index.html $(BUILD_DIR)/assets $(BUILD_DIR)/files $(BUILD_DIR)/notes $(BUILD_DIR)/puzzles $(BUILD_DIR)/tools $(BUILD_DIR)/simple.html $(BUILD_DIR)/styles.css
+	du -hd 1
+
+clean:
+	rm -r ./$(BUILD_DIR)
 
 $(BUILD_DIR):
 	mkdir -p ./$(BUILD_DIR)

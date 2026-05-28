@@ -8,6 +8,8 @@ body {
     height: 100vh;
     --machine-color: steelblue;
     --shelf-wood-height: 15%;
+    --wood-bg-color: #D9AE7E;
+    --wood-line-color: #C29364;
 }
 
 a {
@@ -109,32 +111,41 @@ noscript {
 /* Random looking shelf wood textures */
 
 .wood-texture1 {
-    background: #E58F65;
+    box-sizing: border-box;
+    border-left: solid 1px var(--wood-line-color);
+    background: var(--wood-bg-color);
     background-image: repeating-radial-gradient(
-        circle farthest-corner at 50% -300%,
+        circle farthest-corner at 50% -2000%,
         transparent,
-        #D05353 10px,
-        transparent 20px
+        transparent 5px,
+        var(--wood-line-color) 10px,
+        var(--wood-line-color) 10px
     );
 }
 
 .wood-texture2 {
-    background: #E58F65;
+    box-sizing: border-box;
+    border-left: solid 1px var(--wood-line-color);
+    background: var(--wood-bg-color);
     background-image: repeating-radial-gradient(
-        circle farthest-corner at 25% -200%,
+        circle farthest-corner at 25% -2000%,
         transparent,
-        #D05353 10px,
-        transparent 20px
+        transparent 5px,
+        var(--wood-line-color) 10px,
+        var(--wood-line-color) 10px
     );
 }
 
 .wood-texture3 {
-    background: #E58F65;
+    box-sizing: border-box;
+    border-left: solid 1px var(--wood-line-color);
+    background: var(--wood-bg-color);
     background-image: repeating-radial-gradient(
-        circle farthest-corner at 70% 300%,
+        circle farthest-corner at 70% 2000%,
         transparent,
-        #D05353 10px,
-        transparent 20px
+        transparent 5px,
+        var(--wood-line-color) 10px,
+        var(--wood-line-color) 10px
     );
 }
 
