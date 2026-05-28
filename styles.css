@@ -11,11 +11,11 @@ body {
 }
 
 a {
-    color: rgb(200, 200, 200);
+    color: white;
 }
 
 a:visited {
-    color: rgb(180, 180, 180);
+    color: lightblue;
 }
 
 #main-grid {
@@ -36,7 +36,7 @@ a:visited {
 }
 
 #page-title h1 {
-    font-size: 2.5cqh;
+    font-size: 8cqw;
 }
 
 .simplify-link-button:visited {
@@ -73,15 +73,15 @@ noscript {
     justify-content: flex-end;
     flex-direction: row;
     grid-column: span 2;
+    position: relative;
 }
 
 .shelf-wood {
     position: relative;
     height: var(--shelf-wood-height);
     width: 100%;
-    background-color: brown;
     text-align: center;
-    color: lightgray;
+    color: white;
     z-index: 2;
 }
 
@@ -92,14 +92,50 @@ noscript {
 .filler-shelf-wood-div {
     height: 100%;
     position: relative;
+    width: 100vw;
+    right: 0;
     width: 0;
     z-index: -5;
+    display: flex;
+    flex-direction: row;
+    align-items: end;
 }
 
 .filler-shelf-wood-div .shelf-wood {
-    position: absolute;
-    right: 0;
-    width: 100vw;
+    min-width: 10em;
+    max-width: 20em;
+}
+
+/* Random looking shelf wood textures */
+
+.wood-texture1 {
+    background: #E58F65;
+    background-image: repeating-radial-gradient(
+        circle farthest-corner at 50% -300%,
+        transparent,
+        #D05353 10px,
+        transparent 20px
+    );
+}
+
+.wood-texture2 {
+    background: #E58F65;
+    background-image: repeating-radial-gradient(
+        circle farthest-corner at 25% -200%,
+        transparent,
+        #D05353 10px,
+        transparent 20px
+    );
+}
+
+.wood-texture3 {
+    background: #E58F65;
+    background-image: repeating-radial-gradient(
+        circle farthest-corner at 70% 300%,
+        transparent,
+        #D05353 10px,
+        transparent 20px
+    );
 }
 
 .machine-div {
@@ -144,7 +180,7 @@ noscript {
 .description {
     justify-content: center;
     text-align: center;
-    font-size: 3cqh;
+    font-size: 2.5cqh;
 }
 
 .description h3 {
@@ -237,6 +273,14 @@ noscript {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+}
+
+.book-texture1 {
+    background-image: linear-gradient(90deg, chocolate, #e99b63 50%, chocolate 100%);
+}
+
+.book-horizontal-texture1 {
+    background-image: linear-gradient(0deg, chocolate, #e99b63 50%, chocolate 100%);
 }
 
 .cat-shelf {
