@@ -8,8 +8,8 @@ body {
     height: 100vh;
     --machine-color: steelblue;
     --shelf-wood-height: 15%;
-    --wood-bg-color: #D9AE7E;
-    --wood-line-color: #C29364;
+    --wood-bg-color: hsl(25.06, 33.91%, 60%);
+    --wood-line-color: hsl(22.82, 36.04%, 50%);
 }
 
 a {
