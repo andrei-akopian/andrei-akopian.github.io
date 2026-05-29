@@ -11,12 +11,15 @@
 }
 
 .cloud {
-    top: 5%;
-    right: 20%;
     position: absolute;
     filter: blur(0.4rem);
     width: 30%;
     height: 10%;
+}
+
+.cloud1-wrapper {
+    top: 5%;
+    right: 20%;
 }
 
 .cloud1 {
@@ -32,6 +35,28 @@
         80% 80%,
         70% 95%,
         50% 70%,
+        30% 90%
+    );
+}
+
+.cloud2-wrapper {
+    top: 10%;
+    right: 60%;
+}
+
+.cloud2 {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    clip-path: polygon(
+        0% 50%,
+        10% 20%,
+        30% 10%,
+        70% 20%,
+        95% 50%,
+        80% 80%,
+        70% 95%,
+        50% 80%,
         30% 90%
     );
 }
@@ -146,7 +171,6 @@
     width: 3rem;
     height: 3rem;
     position: absolute;
-    top: -3rem;
     clip-path: polygon(0% 50%, 100% 100%, 100% 0%);
     animation: 25s linear -10s infinite forwards child1-walk,
         0.6s ease-in-out 0s infinite alternate walking-wobble;
@@ -159,6 +183,37 @@
     100% {left: 20%;transform: rotateY(180deg);}
 }
 
+.butterfly {
+    width: 1rem;
+    position: absolute;
+    top: -10em;
+    animation: 25s linear -12s infinite forwards butterfly-walk,
+        0.6s ease-in-out 0s infinite alternate butterfly-wobble;
+}
+
+@keyframes butterfly-walk {
+    0% {left: 20%;}
+    49% {transform: rotateY(0deg);}
+    50% {left: 70%;transform: rotateY(180deg);}
+    100% {left: 20%;transform: rotateY(180deg);}
+}
+
+@keyframes butterfly-wobble {
+    0% {
+        top: -4rem;
+        transform: scaleX(0.9);
+    }
+
+    45% {
+        transform: scaleX(1.1);
+    }
+    100% {
+        top: -3rem;
+        transform: scaleX(0.9);
+    }
+}
+
+
 .child2 {
 
 }
@@ -168,10 +223,49 @@
 }
 
 .cliff {
-    background-color: gray;
+    background-color: hsl(0, 0%, 50%);
     width: 100%;
     height: 40%;
     position: relative;
+    background-image: linear-gradient(
+        90deg,
+        transparent,
+        transparent 25%,
+        hsla(200, 2%, 50%, 0.5) 30%,
+        transparent 35%,
+        hsla(200, 2%, 40%, 0.7) 43%,
+        transparent 55%,
+        hsla(200, 2%, 40%, 0.7) 63%,
+        transparent 73%,
+        transparent 83%,
+        hsla(200, 2%, 20%) 85%, /* waterfall background */
+        hsla(200, 2%, 20%) 91%,
+        transparent 93%
+    ), linear-gradient(
+        0deg,
+        hsl(200, 2%, 51%) 10%,
+        hsl(200, 0%, 60%) 10%,
+        hsl(200, 1%, 30%) 11%,
+        hsl(200, 1%, 55%) 15%,
+        hsl(200, 1%, 53%) 20%,
+        hsl(200, 0%, 60%) 30%,
+        hsl(200, 1%, 30%) 31%,
+        hsl(200, 0%, 48%) 32%,
+        hsl(200, 2%, 53%) 40%,
+        hsl(200, 0%, 48%) 50%,
+        hsl(200, 1%, 30%) 51%,
+        hsl(200, 1%, 50%) 52%,
+        hsl(200, 1%, 53%) 60%,
+        hsl(200, 1%, 30%) 61%,
+        hsl(200, 2%, 52%) 62%,
+        hsl(200, 2%, 53%) 72%,
+        hsl(200, 2%, 55%) 70%,
+        hsl(200, 0%, 60%) 80%,
+        hsl(200, 1%, 40%) 81%,
+        hsl(200, 2%, 52%) 82%,
+        hsl(200, 1%, 56%) 90%,
+        hsl(200, 1%, 45%) 100%
+    );
 }
 
 .rock-terrace {
@@ -182,6 +276,26 @@
     left: 0;
     background-color: hsl(0, 0%, 46%);
     border-top-right-radius: 10rem;
+    background-image: linear-gradient(
+        -10deg,
+        hsl(200, 2%, 51%) 10%,
+        hsl(200, 1%, 47%) 20%,
+        hsl(200, 1%, 30%) 21%,
+        hsl(200, 0%, 48%) 22%,
+        hsl(200, 0%, 52%) 30%,
+        hsl(200, 2%, 49%) 40%,
+        hsl(200, 1%, 30%) 41%,
+        hsl(200, 1%, 50%) 42%,
+        hsl(200, 0%, 48%) 50%,
+        hsl(200, 1%, 53%) 60%,
+        hsl(200, 1%, 30%) 61%,
+        hsl(200, 2%, 52%) 62%,
+        hsl(200, 2%, 55%) 72%,
+        hsl(200, 2%, 54%) 70%,
+        hsl(200, 0%, 56%) 80%,
+        hsl(200, 1%, 55%) 90%,
+        hsl(200, 1%, 45%) 100%
+    );
 }
 
 .waterfall {
@@ -230,4 +344,20 @@ div.waterfall :nth-child(3) {
     width: 20%;
     height: 15%;
     animation: 10s linear -7s infinite forwards fall;
+}
+
+div.waterfall :nth-child(4) {
+    background-color: hsl(201, 66%, 64%);
+    right: 15%;
+    width: 25%;
+    height: 12%;
+    animation: 9s linear -4s infinite forwards fall;
+}
+
+div.waterfall :nth-child(5) {
+    background-color: hsl(201, 69%, 61%);
+    right: 55%;
+    width: 14%;
+    height: 20%;
+    animation: 10s linear -9s infinite forwards fall;
 }
