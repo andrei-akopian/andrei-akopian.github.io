@@ -11,7 +11,6 @@ $(BUILD_DIR):
 	mkdir -p ./$(BUILD_DIR)
 
 $(BUILD_DIR)/index.html: index.html assets/backgrounds
-	echo "hello"
 	python3 swapin.py index.html $(BUILD_DIR)/index.html
 
 $(BUILD_DIR)/assets: assets
@@ -20,7 +19,10 @@ $(BUILD_DIR)/assets: assets
 $(BUILD_DIR)/files: files
 	cp -r files ./public/files
 
-$(BUILD_DIR)/notes: notes
+$(BUILD_DIR)/notes: notes dev
+	cd dev/book
+	node generator.js release
+	cd ../..
 	cp -r notes ./public/notes
 
 $(BUILD_DIR)/puzzles: puzzles
