@@ -20,9 +20,9 @@ $(BUILD_DIR)/files: files
 	cp -r files ./public/files
 
 $(BUILD_DIR)/notes: notes dev
-	cd dev/books
-	node generator.js release
-	cd ../..
+	# cd dev/books
+	# node generator.js release
+	# cd ../..
 	cp -r notes ./public/notes
 
 $(BUILD_DIR)/puzzles: puzzles

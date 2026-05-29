@@ -327,6 +327,10 @@
 </div>
         </div>
         <style>
+            html {
+                scrollbar-color: hsl(30, 30%, 50%) hsl(30, 50%, 80%);
+            }
+
             #title-sign {
                 position: absolute;
             }
@@ -354,6 +358,24 @@
             body {
                 margin: 0;
                 height: 100vh;
+                background-color: hsl(30, 50%, 70%);
+                background-image: repeating-linear-gradient(
+                    90deg,
+                    hsl(30, 50%, 50%) 0px,
+                    hsl(30, 50%, 50%) 5px,
+                    transparent 5px,
+                    transparent 100px,
+                    hsl(30, 50%, 50%) 100px,
+                    hsl(30, 50%, 50%) 105px
+                ), repeating-linear-gradient(
+                    0deg,
+                    hsl(30, 50%, 50%) 0px,
+                    hsl(30, 50%, 50%) 5px,
+                    transparent 5px,
+                    transparent 100px,
+                    hsl(30, 50%, 50%) 100px,
+                    hsl(30, 50%, 50%) 105px
+                );
             }
             h4 {
                 margin: 1em auto 0;
