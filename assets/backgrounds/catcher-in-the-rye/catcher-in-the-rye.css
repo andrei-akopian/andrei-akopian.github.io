@@ -213,13 +213,56 @@
     }
 }
 
-
 .child2 {
+    width: 3rem;
+    height: 2rem;
+    position: absolute;
+    background-color: hsl(30 40% 40%);
+    clip-path: polygon(0% 100%, 25% 70%, 50% 55%, 75% 70%, 100% 100%);
+    animation: 10s linear 0s infinite forwards child2-walk,
+        0.6s ease-in-out -2s infinite alternate walking-wobble;
+}
 
+@keyframes child2-walk{
+    0% {left: 35%;}
+    50% {left: 40%;}
+    100% {left: 35%;}
 }
 
 .child3 {
+    width: 3rem;
+    height: 2rem;
+    left: 40%;
+    position: absolute;
+    background-color: hsl(139 40% 40%);
+    clip-path: polygon(0% 100%, 25% 60%, 75% 60%, 100% 100%);
+    animation: 10s linear -5s infinite forwards child3-walk,
+        0.8s ease-in-out 0s infinite alternate walking-wobble;
+}
 
+@keyframes child3-walk{
+    0% {left: 80%;}
+    50% {left: 85%;}
+    100% {left: 80%;}
+}
+
+.ball {
+    width: 2rem;
+    height: 2rem;
+    top: -3rem;
+    left: 50%;
+    border-radius: 50%;
+    position: absolute;
+    background-image: radial-gradient(blue, lightblue);
+    animation: 6s linear -5s infinite alternate ball-animation;
+}
+
+@keyframes ball-animation {
+    0% {left: 35%; top:1em;}
+    25% {top:-4em;}
+    50% {top:-5em;}
+    25% {top:-4em;}
+    100% {left: 85%; top:1em;}
 }
 
 .cliff {
