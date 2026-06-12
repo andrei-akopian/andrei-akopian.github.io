@@ -18,7 +18,7 @@
   subheading: aka HPMOR
   hotlink: https://hpmor.com/
   author: Eliezer S. Yudkowsky
-  description: if fantasy characters were actually smart
+  description: fanfiction, but beats most fantasy books
   links:
     Wikipedia: https://en.wikipedia.org/wiki/Harry_Potter_and_the_Methods_of_Rationality
     LessWrong: https://www.lesswrong.com/hpmor
@@ -28,7 +28,7 @@
   subheading: (before he was a captain)
   hotlink: https://en.wikipedia.org/wiki/The_13%C2%BD_Lives_of_Captain_Bluebear
   author: Walter Moers
-  description: good imagination for once
+  description: really good world building
   links:
     Wikipedia: https://en.wikipedia.org/wiki/The_13%C2%BD_Lives_of_Captain_Bluebear
     Goodreads: https://www.goodreads.com/book/show/62032.The_13_Lives_of_Captain_Bluebear
@@ -48,7 +48,7 @@
   subheading: an introduction to design
   author: Don Norman
   hotlink: https://en.wikipedia.org/wiki/The_Design_of_Everyday_Things
-  description: Its good to know about design
+  description: into to design
   links:
     Wikipedia: https://en.wikipedia.org/wiki/The_Design_of_Everyday_Things
     Goodreads: https://www.goodreads.com/book/show/840.The_Design_of_Everyday_Things
@@ -91,7 +91,7 @@
   subheading: aka Schachnovelle
   author: Stefan Zweig
   hotlink: https://en.wikipedia.org/wiki/The_Royal_Game
-  description: fictional story about extreme boredom
+  description: hidden gem, just like Perfume by Süskind
   links:
     Wikipedia: https://en.wikipedia.org/wiki/The_Royal_Game
     GoogleBooks: https://www.google.com/books/edition/The_Royal_Game/LRyFAAAAQBAJ
@@ -122,15 +122,6 @@
   links:
     Wikipedia: https://en.wikipedia.org/wiki/Momo_(novel)
     Goodreads: https://www.goodreads.com/book/show/1408839
-- title: Calculus Made Easy
-  subheading: What one fool can do, another can.
-  author: Silvanus P. Thompson
-  hotlink: https://calculusmadeeasy.org/
-  description: beats 21st century textbooks
-  links:
-    ProjectGutenberg: https://www.gutenberg.org/ebooks/33283
-    Wikipedia: https://en.wikipedia.org/wiki/Calculus_Made_Easy
-    GoogleBooks: https://www.google.com/books/edition/Calculus_Made_Easy/Cj-uAgAAQBAJ
 - title: Catch-22
   subheading: satirical war novel
   author: Joseph Heller
