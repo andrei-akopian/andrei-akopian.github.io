@@ -21,6 +21,8 @@ Research Location
   - wikitravel.org
   - reddit
 - Some Museums and Attractions need tickets bought in advance
+- Weather at destination
+  - if flying, see wind speed, weather, and status of local airport. Those might predict that the plane will be diverted.
 
 Packing List
 ------------
@@ -80,7 +82,7 @@ Packing List
       - windbreaker
     - Anti-sun
       - Hat
-      - sunglasses
+      - sunglasses. unintuitively necessary on both hot and on tall cold mountains.
       - thin but long sleve shirts
       - sun cream (warning, might not be allowed on flights)
     - Anti-cold
