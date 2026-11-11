@@ -246,20 +246,43 @@ noscript {
     height: 100%;
     width: 100%;
     background-color: lightgray;
+    position: relative;
+}
+
+.garbage-chute-hole {
+    height: 80%;
+    width: 80%;
+    margin: 10%;
+    position: relative;
+}
+
+.garbage-chute-darkness {
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    position: absolute;
+    top: 0;
 }
 
 .garbage-chute {
-    height: 80%;
-    width: 80%;
+    height: 100%;
+    width: 100%;
     font-size: 2cqh;
     border-color: gray;
+    background-color: lightgray;
     border-width: 0.3em;
     border-style: solid;
     display: flex;
     align-items: center;
     justify-items: center;
     box-sizing: border-box;
-    margin: 10%;
+    position: absolute;
+}
+
+.garbage-chute-hole:hover > .garbage-chute {
+    transition: 1s;
+    height: 60%;
+    bottom: 0;
 }
 
 .garbage-chute > a {
