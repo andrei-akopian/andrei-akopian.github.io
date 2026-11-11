@@ -1,0 +1,19 @@
+<div class="book">
+    <div class="spine">
+        <a href="<%= hotlink %>"><%= title %></a>
+    </div>
+    <div class="cover">
+        <div class="cover-fold"></div>
+        <div class="cover-text">
+            <h4><a href="<%= hotlink %>"><%= title %></a></h4>
+            <p><%= subheading %></p>
+            <p>by <%= author %></p>
+            <p class="description"><%= description %></p>
+            <div class="link-list-wrapper">
+                <div class="link-list"><%- links.each do |name, url| -%>
+                    <a href="<%= url %>"><%= name %></a>
+                <%- end -%></div>
+            </div>
+        </div>
+    </div>
+</div>
