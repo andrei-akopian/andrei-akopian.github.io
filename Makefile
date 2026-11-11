@@ -1,7 +1,7 @@
 BUILD_DIR = public
 
 .PHONY: all
-all: $(BUILD_DIR) $(BUILD_DIR)/index.html $(BUILD_DIR)/assets $(BUILD_DIR)/files $(BUILD_DIR)/notes $(BUILD_DIR)/puzzles $(BUILD_DIR)/tools $(BUILD_DIR)/simple.html $(BUILD_DIR)/styles.css
+all: $(BUILD_DIR) $(BUILD_DIR)/index.html $(BUILD_DIR)/assets $(BUILD_DIR)/files $(BUILD_DIR)/puzzles $(BUILD_DIR)/tools $(BUILD_DIR)/simple.html $(BUILD_DIR)/styles.css $(BUILD_DIR)/notes/a-stack-of-books.html $(BUILD_DIR)/notes
 	du -hd 1
 
 clean:
@@ -18,6 +18,10 @@ $(BUILD_DIR)/assets: assets
 
 $(BUILD_DIR)/files: files
 	cp -r files ./public/files
+
+$(BUILD_DIR)/notes/a-stack-of-books.html: dev
+	mkdir -p ./public/notes
+	ruby dev/books/generator.rb dev/books/ ./public/notes/a-stack-of-books.html
 
 $(BUILD_DIR)/notes: notes dev
 	cp -r notes ./public/notes

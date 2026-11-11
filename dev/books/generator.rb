@@ -1,18 +1,22 @@
 require 'erb'
 require 'yaml'
 
+puts "Compiling a-stack-of-good-books.html"
+
+path = ARGV[0]
+
 BOOKS_TEMPLATE_PATH = 'books-template.html.erb'.freeze
 BOOK_TEMPLATE_PATH = 'book-template.html.erb'.freeze
 YAML_FILE_PATH = 'books.yaml'.freeze
 
-books_template = ERB.new(File.read(BOOKS_TEMPLATE_PATH), trim_mode: "-")
-book_template = ERB.new(File.read(BOOK_TEMPLATE_PATH), trim_mode: "-")
+books_template = ERB.new(File.read(path + BOOKS_TEMPLATE_PATH), trim_mode: "-")
+book_template = ERB.new(File.read(path + BOOK_TEMPLATE_PATH), trim_mode: "-")
 
 books_yaml = []
 good_books = []
 more_books = []
 
-YAML.load_stream(File.read(YAML_FILE_PATH)) do |document|
+YAML.load_stream(File.read(path + YAML_FILE_PATH)) do |document|
   books_yaml.push(document)
 end
 
@@ -26,4 +30,4 @@ end
 
 output = books_template.result_with_hash({good_books: good_books, more_books: more_books})
 
-File.write('books.html', output)
+File.write(ARGV[1], output)
