@@ -242,6 +242,34 @@ noscript {
     clip-path: polygon(0% 0, 80% 0%, 100% 101%, 0% 101%);
 }
 
+.garbage-chute-wrapper {
+    height: 100%;
+    width: 100%;
+    background-color: lightgray;
+}
+
+.garbage-chute {
+    height: 80%;
+    width: 80%;
+    font-size: 2cqh;
+    border-color: gray;
+    border-width: 0.3em;
+    border-style: solid;
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    box-sizing: border-box;
+    margin: 10%;
+}
+
+.garbage-chute > a {
+    margin: auto;
+    border-color: gray;
+    border-width: 0 0 0.7cqh 0;
+    border-style: solid;
+    color: gray;
+}
+
 .book {
     width: 100%;
     height: 15%;
@@ -513,6 +541,12 @@ section:target {
         display: none;
     }
     .project-roller-placeholder {
+        display: flex;
+    }
+    .garbage-chute-wrapper {
+        display: none;
+    }
+    .garbage-chute-warpper {
         display: flex;
     }
     .mobile {
