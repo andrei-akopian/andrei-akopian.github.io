@@ -454,6 +454,17 @@ noscript {
     background-color: darkgray;
 }
 
+.crumbled-papers {
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap-reverse;
+    max-width: 10rem;
+}
+
+.crumbled-papers > * {
+    position: relative;
+}
+
 /* https://github.com/cadars/john-doe */
 .project-roller {
     grid-area: 5 / 1 / 6 / 3;
