@@ -1,7 +1,7 @@
 BUILD_DIR = public
 
 .PHONY: all
-all: $(BUILD_DIR) $(BUILD_DIR)/index.html $(BUILD_DIR)/assets $(BUILD_DIR)/files $(BUILD_DIR)/puzzles $(BUILD_DIR)/tools $(BUILD_DIR)/simple.html $(BUILD_DIR)/styles.css $(BUILD_DIR)/notes/a-stack-of-books.html $(BUILD_DIR)/notes
+all: $(BUILD_DIR) $(BUILD_DIR)/index.html $(BUILD_DIR)/assets $(BUILD_DIR)/files $(BUILD_DIR)/puzzles $(BUILD_DIR)/tools $(BUILD_DIR)/simple.html $(BUILD_DIR)/styles.css $(BUILD_DIR)/notes
 	du -hd 1
 
 clean:
@@ -10,8 +10,8 @@ clean:
 $(BUILD_DIR):
 	mkdir -p ./$(BUILD_DIR)
 
-$(BUILD_DIR)/index.html: index.html assets/backgrounds
-	python3 swapin.py index.html $(BUILD_DIR)/index.html
+$(BUILD_DIR)/index.html: index.html.erb assets/backgrounds
+	ruby swapin.rb index.html.erb $(BUILD_DIR)/index.html
 
 $(BUILD_DIR)/assets: assets
 	cp -r assets ./public/assets
@@ -19,12 +19,10 @@ $(BUILD_DIR)/assets: assets
 $(BUILD_DIR)/files: files
 	cp -r files ./public/files
 
-$(BUILD_DIR)/notes/a-stack-of-books.html: dev
-	mkdir -p ./public/notes
-	ruby dev/books/generator.rb dev/books/ ./public/notes/a-stack-of-books.html
-
 $(BUILD_DIR)/notes: notes dev
-	cp -r notes ./public/notes
+	mkdir -p ./public/notes
+	cp -r notes ./public/
+	ruby dev/books/generator.rb dev/books/ ./public/notes/a-stack-of-books.html
 
 $(BUILD_DIR)/puzzles: puzzles
 	cp -r puzzles ./public/puzzles
