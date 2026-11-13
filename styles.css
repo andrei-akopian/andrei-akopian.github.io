@@ -10,6 +10,37 @@ body {
     --shelf-wood-height: 15%;
     --wood-bg-color: hsl(25.06, 33.91%, 58%);
     --wood-line-color: hsl(22.82, 36.04%, 48%);
+    /* Machine texture */
+    /* Look of the metal */
+    --metal-hue:          210;      /* 0-360. 210 = steel blue, 30 = bronze, 50 = brass */
+    --metal-saturation:   6%;       /* 0% = pure grey, higher = more coloured metal */
+    --metal-lightness:    52%;      /* base brightness of the plate */
+    --metal-light-angle:  115deg;   /* direction the sheen band runs across the plate */
+
+    /* Layer strengths (0 = layer off, 1 = full) */
+    --metal-brushed:      .35;      /* visibility of the brushing grain */
+    --metal-noise:        .30;      /* visibility of fine grain */
+    --metal-scratches:    .55;      /* visibility of scratches */
+    --metal-wear:         .45;      /* visibility of stains and vignette */
+
+    /* Sheen: the bright bands that make it read as reflective */
+    --sheen-colour:       #fff4;
+    --sheen-colour-weak:  #fff3;
+
+    /* Scratch colours: light = exposed bright metal, dark = deep groove */
+    --scratch-light:      #fffc;
+    --scratch-light-soft: #fff8;
+    --scratch-dark:       #0006;
+
+    /* Wear stain colours (alpha controls how strong each blotch is) */
+    --stain-rust:         #2a1d1299;
+    --stain-cool:         #1c222899;
+    --stain-bronze:       #3a2a1c88;
+    --vignette-colour:    #000a;
+
+    /* Plate shape (only used by .metal; drop if you size it yourself) */
+    --metal-radius:       10px;
+    --metal-shadow:       0 30px 60px #000a;
 }
 
 /* Importance Filter */
@@ -65,6 +96,14 @@ a:visited {
     font-size: 8cqw;
 }
 
+.simplify-link-button-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+
 .simplify-link-button:visited {
     color: #0000EE;
     text-decoration-line: none;
@@ -77,7 +116,8 @@ a:visited {
     border: dashed black;
     padding: 0.5rem;
     font-size: 0.6em;
-    width: 90%;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 noscript {
@@ -174,7 +214,6 @@ noscript {
 }
 
 .machine-div {
-    background: var(--machine-color);
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -185,6 +224,28 @@ noscript {
     z-index: 20;
 }
 
+.machine-texture {
+    background-color: var(--machine-color);
+}
+
+/*.machine-texture {
+    background:
+      linear-gradient(
+        var(--metal-light-angle),
+        transparent 0   18%,
+        var(--sheen-colour)      26%,
+        transparent     34%  58%,
+        var(--sheen-colour-weak) 66%,
+        transparent     76%
+      ),
+      linear-gradient(
+        calc(var(--metal-light-angle) + 90deg),
+        #0003,
+        transparent 40%,
+        #0004
+      ),
+      hsl(var(--metal-hue) var(--metal-saturation) var(--metal-lightness));
+}*/
 
 .machine-label {
     height: 1.5rem;
