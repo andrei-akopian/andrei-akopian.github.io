@@ -555,6 +555,62 @@ section:target {
   display: flex;
 }
 
+#view-filter-toggle {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    width: 0;
+    height: 0;
+    margin: 0;
+}
+
+.view-filter-switch {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+#view-filter-toggle:checked + label {
+}
+
+#view-filter-toggle:checked + label > .view-filter-normal-view {
+    background-color: yellow;
+}
+
+#view-filter-toggle:checked + label > .view-filter-importance-view {
+    background-color: green;
+}
+
+.view-filter-label {
+    aspect-ratio: 2;
+    display: flex;
+    flex-direction: row;
+
+}
+
+.view-filter-normal-view {
+    background-color: white;
+    width: 49%;
+    border-color: gray;
+    border-width: 1%;
+    border-style: solid;
+}
+
+.view-filter-importance-view {
+    background-color: lightgray;
+    width: 49%;
+    border-color: gray;
+    border-width: 1%;
+    border-style: solid;
+}
+
+.view-normal {
+
+}
+.view-filter {
+
+}
+
 .background-wrapper {
     height: 100%;
     min-width: 70%;

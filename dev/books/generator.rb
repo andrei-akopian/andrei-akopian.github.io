@@ -1,8 +1,6 @@
 require 'erb'
 require 'yaml'
 
-puts "Compiling a-stack-of-good-books.html"
-
 path = ARGV[0]
 
 BOOKS_TEMPLATE_PATH = 'books-template.html.erb'.freeze
