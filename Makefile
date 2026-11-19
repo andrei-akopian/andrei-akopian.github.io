@@ -32,6 +32,7 @@ $(BUILD_DIR)/tools: tools
 
 $(BUILD_DIR)/simple.html: simple.html
 	cp simple.html ./public/simple.html
+	cp now.txt ./public/now.txt
 
 $(BUILD_DIR)/styles.css: styles.css
 	cp styles.css ./public/styles.css

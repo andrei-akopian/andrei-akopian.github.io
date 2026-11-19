@@ -6,7 +6,11 @@ html {
 body {
     margin: 0;
     height: 100vh;
-    --machine-color: steelblue;
+    /* Machine texture */
+    --machine-color: hsl(207, 44%, 49%);
+    --machine-color2: hsl(207, 44%, 45%);
+    --machine-color3: hsl(207, 44%, 55%);
+
     --shelf-wood-height: 15%;
     --wood-bg-color: hsl(25.06, 33.91%, 58%);
     --wood-line-color: hsl(22.82, 36.04%, 48%);
@@ -18,37 +22,7 @@ body {
     --book-lighted: chocolate;
     --book-very-light: #e99b63;
     --switok-handle-color: saddlebrown;
-    /* Machine texture */
-    /* Look of the metal */
-    --metal-hue:          210;      /* 0-360. 210 = steel blue, 30 = bronze, 50 = brass */
-    --metal-saturation:   6%;       /* 0% = pure grey, higher = more coloured metal */
-    --metal-lightness:    52%;      /* base brightness of the plate */
-    --metal-light-angle:  115deg;   /* direction the sheen band runs across the plate */
 
-    /* Layer strengths (0 = layer off, 1 = full) */
-    --metal-brushed:      .35;      /* visibility of the brushing grain */
-    --metal-noise:        .30;      /* visibility of fine grain */
-    --metal-scratches:    .55;      /* visibility of scratches */
-    --metal-wear:         .45;      /* visibility of stains and vignette */
-
-    /* Sheen: the bright bands that make it read as reflective */
-    --sheen-colour:       #fff4;
-    --sheen-colour-weak:  #fff3;
-
-    /* Scratch colours: light = exposed bright metal, dark = deep groove */
-    --scratch-light:      #fffc;
-    --scratch-light-soft: #fff8;
-    --scratch-dark:       #0006;
-
-    /* Wear stain colours (alpha controls how strong each blotch is) */
-    --stain-rust:         #2a1d1299;
-    --stain-cool:         #1c222899;
-    --stain-bronze:       #3a2a1c88;
-    --vignette-colour:    #000a;
-
-    /* Plate shape (only used by .metal; drop if you size it yourself) */
-    --metal-radius:       10px;
-    --metal-shadow:       0 30px 60px #000a;
 }
 
 /* Importance Filter */
@@ -111,6 +85,29 @@ a:visited {
     height: 100%;
     grid-template-columns: 1fr 1fr 40% 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
+    position: relative;
+}
+
+.machine-background-texture {
+    position: absolute;
+    grid-area: 1 / 1 / 6 / 6;
+    background: repeating-linear-gradient(
+        2deg,
+        hsl(0, 0%, 50%, 0.2) 0px,
+        transparent 10px,
+        hsl(0, 0%, 50%, 0.2) 30px,
+        transparent 5px
+    ), repeating-linear-gradient(
+        -4deg,
+        var(--machine-color),
+        var(--machine-color2) 2px,
+        var(--machine-color3) 4px,
+        var(--machine-color2) 6px,
+        var(--machine-color3) 8px
+    );
+    inset: 0;
+    clip-path: polygon(0% 0, 30% 0, 71% 101%, 0 101%);
+    z-index: 0;
 }
 
 #page-title {
@@ -151,8 +148,16 @@ a:visited {
     box-sizing: border-box;
 }
 
-noscript {
+.noscript {
     font-size: 1rem;
+}
+
+.noscript-description {
+    display: none;
+}
+
+.noscript:hover .noscript-description {
+    display: block;
 }
 
 .shelf-div {
@@ -256,7 +261,7 @@ noscript {
 }
 
 .machine-texture {
-    background-color: var(--machine-color);
+    /*background-color: var(--machine-color);*/
 }
 
 /*.machine-texture {
@@ -320,7 +325,7 @@ noscript {
 }
 
 .slant {
-    background-color: var(--machine-color);
+    /*background-color: var(--machine-color);*/
     width: 100%;
     height: 100%;
     transform: translateX(-0.05rem);
