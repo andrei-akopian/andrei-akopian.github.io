@@ -55,6 +55,10 @@ body:has(.filter-glasses-toggle:checked) .emoji-icon {
     filter: grayscale(100%);
 }
 
+body:has(.filter-glasses-toggle:checked) .grayout {
+    filter: grayscale(100%);
+}
+
 body:has(.filter-glasses-toggle:checked) {
     .important-0 {
         filter: brightness(1) sepia(100%) hue-rotate(73deg) saturate(50%);
