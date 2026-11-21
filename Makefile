@@ -26,6 +26,7 @@ $(BUILD_DIR)/notes: notes dev
 	mkdir -p ./public/notes
 	cp -r notes ./public/
 	ruby dev/books/generator.rb dev/books/ ./public/notes/a-stack-of-books.html
+	cp -r dev/books/books.css ./public/notes/books.css
 
 $(BUILD_DIR)/puzzles: puzzles
 	cp -r puzzles ./public/puzzles
