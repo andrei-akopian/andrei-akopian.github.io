@@ -7,6 +7,9 @@ all: $(BUILD_DIR) $(BUILD_DIR)/index.html $(BUILD_DIR)/assets $(BUILD_DIR)/files
 clean:
 	rm -r ./$(BUILD_DIR)
 
+serve: all
+	python3 -m http.server 8000 -d public
+
 $(BUILD_DIR):
 	mkdir -p ./$(BUILD_DIR)
 

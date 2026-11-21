@@ -153,6 +153,7 @@
                 font-family: Times New Roman;
             }
             .book:hover {
+                max-height: 25em;
                 height: calc(100vh - 28em);
                 background-color: darkorange;
                 padding: 0;
@@ -201,6 +202,8 @@
         </div>
         <div id="book-stack">
             <div id="books"><% good_books.each do |book| %><%= book %><% end %></div>
+        </div>
+        <div class="background-books">
         </div>
         <div id="more-books"><% more_books.each do |book| %><%= book %><% end %></div>
     </body>
